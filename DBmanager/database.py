@@ -7,6 +7,9 @@ from gui.facturacion import registrar_usuario
 # Función para crear la base de datos
 def crear_db(root):
     try:
+        # Verificación de la carpeta "db" para crear la base de datos.
+        if not os.path.isdir('db'):
+            os.mkdir('db')
         with sqlite3.connect("db/database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("CREATE TABLE IF NOT EXISTS tbl_factura  (id_factura INTEGER  PRIMARY KEY, nombre_cliente TEXT CHECK(LENGTH(nombre_cliente) <= 50 AND nombre_cliente IS NOT NULL), identificacion TEXT CHECK(LENGTH(identificacion) <= 50 AND identificacion IS NOT NULL), direccion TEXT CHECK(LENGTH(direccion) <= 100), telefono TEXT CHECK(LENGTH(telefono) <= 20), fecha_emision TEXT NOT NULL, impuesto REAL NOT NULL, total_sin_impuesto REAL NOT NULL, total_impuesto REAL NOT NULL, total_final REAL NOT NULL)")
