@@ -33,6 +33,7 @@ def iniciar_sesion(root):
 def verificar_inicio_sesion(root, id, contrasena, entradas, ventana):
     from DBmanager.DBusuarios import verificar_usuario_db
     usuario_db = verificar_usuario_db(id)
+    #TODO: Configurar inicio de sesión con nueva base de datos y contraseñas
     if usuario_db and (usuario_db[6] == 'admin' or usuario_db[6] == 'empleado'):
         if contrasena in usuario_db:
             messagebox.showinfo("Inicio de sesión", "Acceso concedido")
