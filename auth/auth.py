@@ -11,8 +11,7 @@ def iniciar_sesion(root):
     ventana_inicio = tk.Toplevel(root)
     ventana_inicio.title("Iniciar Sesión")
     ventana_inicio.resizable(False, False)
-    ventana_inicio.protocol("WM_DELETE_WINDOW", lambda: None)
-    ventana_inicio.attributes('-toolwindow', 1)
+    ventana_inicio.protocol("WM_DELETE_WINDOW", lambda: finalizar_programa(root))
     
     ttk.Label(ventana_inicio, text="Inicio de sesión", font=("Arial", 16, "bold")).grid(row=0, column=1, padx=5, pady=20, sticky="nsew")
     
@@ -34,16 +33,32 @@ def verificar_inicio_sesion(root, id, contrasena, entradas, ventana):
     from DBmanager.DBusuarios import verificar_usuario_db
     usuario_db = verificar_usuario_db(id)
     #TODO: Configurar inicio de sesión con nueva base de datos y contraseñas
-    if usuario_db and (usuario_db[6] == 'admin' or usuario_db[6] == 'empleado'):
-        if contrasena in usuario_db:
-            messagebox.showinfo("Inicio de sesión", "Acceso concedido")
-            set_usuario(usuario_db, True)
-            root.deiconify()
-            crear_interfaz_principal(root)
-            ventana.destroy()
-        else:
-            borrar_entradas(entradas)
-            messagebox.showerror("Inicio de sesión", "Usuario o contraseña incorrectas")
+    if not usuario_db:
+        return mostrar_error(entradas, 1)
+    
+    if not (usuario_db[6] == 0 or usuario_db[6] == 1):
+        return mostrar_error(entradas, 2)
+    
+    if not contrasena in usuario_db:
+        return mostrar_error(entradas, 3)
     else:
-        borrar_entradas(entradas)
-        messagebox.showerror("Inicio de sesión", "Usuario o contraseña incorrectas")
+        messagebox.showinfo("Inicio de sesión", "Acceso concedido")
+        set_usuario(usuario_db, True)
+        root.deiconify()
+        crear_interfaz_principal(root)
+        ventana.destroy()
+
+#! FUNCIÓN DE MENSAJES DE ERROR
+
+def mostrar_error(entradas, codigo):
+    borrar_entradas(entradas)
+    match codigo:
+        case 1:
+            mensaje = "Usuario inexistente."
+        case 2:
+            mensaje = "Usuario sin acceso autorizado."
+        case 3:
+            mensaje = "Usuario o contraseña incorrectas."
+        case _:
+            mensaje = "Ocurrió un error inesperado."
+    return messagebox.showerror("Inicio de sesión", mensaje)

@@ -10,6 +10,7 @@ from utils.arboles import *
 from DBmanager.DBproductos import traer_inventario_producto_id_db, traer_inventario_producto_nombre_db, traer_producto_id_db, traer_producto_nombre_db
 from DBmanager.DBfacturacion import traer_ultima_id_factura_db, crear_factura_db
 from DBmanager.DBusuarios import verificar_usuario_db, registrar_usuario_db
+from DBmanager.DBtipo_usuarios import traer_tipos
 from models.models import get_usuario, set_productos_factura, get_productos_factura, get_cliente, set_cliente, info_empresa
 
 #! FUNCIONES PARA BOTÓN FACTURAR
@@ -409,10 +410,12 @@ def registrar_usuario(root, tipo_usuario = None):
     input_contrasena = tk.Entry(ventana_registro, fg='grey')
     input_contrasena.insert(0, "Dejar vacío si es cliente")
     
-    opciones = ['admin', 'empleado', 'cliente']
+    opciones = traer_tipos()
+    print(opciones)
     opcion_seleccionada = tk.StringVar()
     combo_tipo_usuario = ttk.Combobox(ventana_registro, textvariable=opcion_seleccionada, values=opciones, state='readonly')
     combo_tipo_usuario.current(2)
+    print(opcion_seleccionada.get()[0])
     
     if tipo_usuario == 'admin1' or info_usuario[6] == 'admin':
         
@@ -425,12 +428,15 @@ def registrar_usuario(root, tipo_usuario = None):
         combo_tipo_usuario.grid(row=7, column=1, padx=5, pady=5, sticky="nsew")
         
         if tipo_usuario == 'admin1':
+            from utils.utils import finalizar_programa
             root.withdraw()
             ttk.Label(ventana_registro, text='Primer usuario administrador').grid(row=7, column=0, padx=5, pady=5, sticky="nsew")
             combo_tipo_usuario.current(0)
             combo_tipo_usuario.config(state='disabled')
+            
+            ventana_registro.protocol("WM_DELETE_WINDOW", lambda: finalizar_programa(root))
     
-    btn_registrar = ttk.Button(ventana_registro, text="Registrar", command=lambda: registrar_usuario_db(root, input_id_usuario.get(), input_nombre_usuario.get(), input_apellidos.get(), input_telefono.get(), input_correo.get(), input_contrasena.get(), opcion_seleccionada.get(), ventana_registro))
+    btn_registrar = ttk.Button(ventana_registro, text="Registrar", command=lambda: registrar_usuario_db(root, input_id_usuario.get(), input_nombre_usuario.get(), input_apellidos.get(), input_telefono.get(), input_correo.get(), input_contrasena.get(), opcion_seleccionada.get()[0], ventana_registro))
     btn_registrar.grid(row=8, column=1, padx=5, pady=5, sticky="nsew")
 
 # Función para verificar las entradas del registro

@@ -9,8 +9,9 @@ from models.models import productos_factura, get_productos_factura, set_producto
 #! FUNCIONES UTILS GENERALES
 # Función para finalizar el programa
 def finalizar_programa(root):
-    root.destroy()
-    sys.exit("Cerrando el programa")
+    if messagebox.askokcancel("Salir", "¿Seguro que deseas salir del programa?"):
+        root.destroy()
+        sys.exit("Cerrando el programa")
 
 # Funcion para verificar si existen productos iguales
 def verificar_productos(id, nombre):
