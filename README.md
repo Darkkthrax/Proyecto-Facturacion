@@ -16,3 +16,5 @@ Diseñado para sistemas operativos Windows.
 * FPDF2 _(Para creación de PDF)_
 * Os
 * Sys
+* bcrypt
+* python-dotenv

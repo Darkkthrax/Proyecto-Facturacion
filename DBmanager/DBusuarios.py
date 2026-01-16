@@ -1,4 +1,7 @@
 import sqlite3
+import bcrypt
+import os
+from dotenv import load_dotenv
 from tkinter import messagebox
 from models.models import get_sesion
 
@@ -40,9 +43,20 @@ def registrar_usuario_db(root, documento, nombre, apellidos, telefono, correo, c
             else:
                 with sqlite3.connect("db/database.db") as conn:
                     cursor = conn.cursor()
-                    cursor.execute(f"INSERT INTO tbl_usuarios (documento_identidad, nombre, apellidos, contrasena, telefono, correo, tipo_usuario) VALUES ({documento}, '{nombre}', '{apellidos}', '{contrasena if contrasena != 'Dejar vacío si es cliente' else ''}', {telefono}, '{correo}', '{tipo_usuario}')")
+                    cursor.execute(f"INSERT INTO tbl_usuarios (documento_identidad, nombre, apellidos, contrasena, telefono, correo, tipo_usuario) VALUES ({documento}, '{nombre}', '{apellidos}', '{encriptar_contrasena(contrasena) if contrasena != 'Dejar vacío si es cliente' else ''}', {telefono}, '{correo}', '{tipo_usuario}')")
                 messagebox.showinfo("Base de datos", "Usuario agregado correctamente", parent=ventana)
                 ventana.destroy()
                 if not get_sesion(): iniciar_sesion(root)
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
+
+
+#! FUNCIÓN PARA ENCRIPTAR CONTRASEÑAS CON PEPPER Y SALT
+def encriptar_contrasena(contrasena):
+    load_dotenv()                                                   # Trae la información del archivo .env
+    pepper = os.getenv('PASSWORD_PEPPER')
+    salt = bcrypt.gensalt(rounds=int(os.getenv('SALT_ROUNDS')))
+    password = (contrasena + pepper).encode('utf-8')
+    contrasena_hash = bcrypt.hashpw(password, salt)
+    print(contrasena_hash.decode('utf-8'))
+    return contrasena_hash.decode('utf-8')

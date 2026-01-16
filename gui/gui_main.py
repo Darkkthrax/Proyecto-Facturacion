@@ -1,11 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
+from utils.utils import finalizar_programa
 from .facturacion import facturar_productos
 from .facturas import administrar_facturas_realizadas
 from .productos import crear_admin_productos
 
 # Función para crear el menú principal
 def crear_interfaz_principal(root):
+    #* Función para el botón de cerrar
+    root.protocol("WM_DELETE_WINDOW", finalizar_programa(root))
+    
     #* TÍTULO PRINCIPAL
     titulo_principal = ttk.Label(root, text="Bienvenido", font=("Arial", 16, "bold"))
     titulo_principal.grid(row=0, column=1, padx=5, pady=20, sticky="n")
