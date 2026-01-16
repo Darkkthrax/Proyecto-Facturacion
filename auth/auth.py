@@ -1,5 +1,8 @@
+import os
 import tkinter as tk
 from tkinter import messagebox, ttk
+from dotenv import load_dotenv
+import bcrypt
 from utils.utils import finalizar_programa
 from utils.entradas import borrar_entradas
 from gui.gui_main import *
@@ -30,16 +33,18 @@ def iniciar_sesion(root):
     btn_cerrar.grid(row=3, column=0, padx=5, pady=5, sticky='nsew')
 
 def verificar_inicio_sesion(root, id, contrasena, entradas, ventana):
+    load_dotenv()
     from DBmanager.DBusuarios import verificar_usuario_db
     usuario_db = verificar_usuario_db(id)
-    #TODO: Configurar inicio de sesión con nueva base de datos y contraseñas
+    password = (contrasena + os.getenv('PASSWORD_PEPPER')).encode('utf-8')
+    
     if not usuario_db:
         return mostrar_error(entradas, 1)
     
     if not (usuario_db[6] == 0 or usuario_db[6] == 1):
         return mostrar_error(entradas, 2)
     
-    if not contrasena in usuario_db:
+    if not bcrypt.checkpw(password, usuario_db[3].encode('utf-8')):
         return mostrar_error(entradas, 3)
     else:
         messagebox.showinfo("Inicio de sesión", "Acceso concedido")
