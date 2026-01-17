@@ -411,11 +411,9 @@ def registrar_usuario(root, tipo_usuario = None):
     input_contrasena.insert(0, "Dejar vacío si es cliente")
     
     opciones = traer_tipos()
-    print(opciones)
     opcion_seleccionada = tk.StringVar()
     combo_tipo_usuario = ttk.Combobox(ventana_registro, textvariable=opcion_seleccionada, values=opciones, state='readonly')
     combo_tipo_usuario.current(2)
-    print(opcion_seleccionada.get()[0])
     
     if tipo_usuario == 'admin1' or info_usuario[6] == 'admin':
         
