@@ -7,6 +7,7 @@ from datetime import datetime
 from fpdf import FPDF
 from utils.entradas import on_focus_in, on_focus_out, restaurar_entradas
 from utils.arboles import *
+from utils.comboboxes import actualizar_contraseña_registro
 from DBmanager.DBproductos import traer_inventario_producto_id_db, traer_inventario_producto_nombre_db, traer_producto_id_db, traer_producto_nombre_db
 from DBmanager.DBfacturacion import traer_ultima_id_factura_db, crear_factura_db
 from DBmanager.DBusuarios import verificar_usuario_db, registrar_usuario_db
@@ -415,15 +416,18 @@ def registrar_usuario(root, tipo_usuario = None):
     combo_tipo_usuario = ttk.Combobox(ventana_registro, textvariable=opcion_seleccionada, values=opciones, state='readonly')
     combo_tipo_usuario.current(2)
     
-    if tipo_usuario == 'admin1' or info_usuario[6] == 'admin':
+    if tipo_usuario == 'admin1' or info_usuario[6] == 0:
         
-        ttk.Label(ventana_registro, text="Contraseña:").grid(row=6, column=0, padx=5, pady=5, sticky="nsew")
+        label_contrasena = ttk.Label(ventana_registro, text="Contraseña:")
+        label_contrasena.grid(row=6, column=0, padx=5, pady=5, sticky="nsew")
         input_contrasena.bind("<FocusIn>", lambda event: on_focus_in(event, entry=input_contrasena, placeholder="Dejar vacío si es cliente"))
         input_contrasena.bind("<FocusOut>", lambda event: on_focus_out(event, entry=input_contrasena, placeholder="Dejar vacío si es cliente"))
         input_contrasena.grid(row=6, column=1, padx=5, pady=5, sticky="nsew")
         
         ttk.Label(ventana_registro, text="Tipo de usuario").grid(row=7, column=0, padx=5, pady=5, sticky="nsew")
         combo_tipo_usuario.grid(row=7, column=1, padx=5, pady=5, sticky="nsew")
+        actualizar_contraseña_registro(opcion_seleccionada.get()[0], [label_contrasena, input_contrasena])
+        combo_tipo_usuario.bind("<<ComboboxSelected>>", lambda event: actualizar_contraseña_registro(opcion_seleccionada.get()[0], [label_contrasena, input_contrasena]))
         
         if tipo_usuario == 'admin1':
             from utils.utils import finalizar_programa
