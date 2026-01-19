@@ -2,12 +2,12 @@ import tkinter as tk
 
 #! FUNCIONES PARA ENTRADAS
 # Función para crear un placeholder
-def on_focus_in(event, entry, placeholder):
+def on_focus_in(entry, placeholder):
     if entry.get() == placeholder:
         entry.delete(0, tk.END)
         entry.config(fg='black') # Color normal para texto
 
-def on_focus_out(event, entry, placeholder):
+def on_focus_out(entry, placeholder):
     if entry.get() == "":
         entry.insert(0, placeholder)
         entry.config(fg='grey') # Color gris para el placeholder
