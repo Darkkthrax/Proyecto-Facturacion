@@ -44,14 +44,13 @@ def registrar_usuario_db(root, documento, nombre, apellidos, telefono, correo, c
     if '@' not in correo or verificar_dominios(correo) or '.com' not in correo:
         messagebox.showerror("Registro", "Agregue un correo disponible", parent=ventana)
         return
-    #* Validación de contraseña vacía
-    if contrasena == 'Dejar vacío si es cliente':
-        messagebox.showwarning("Contraseña", "Ingrese una contraseña", parent=ventana)
-        return
-    #* Validación de tipo de usuario y caracteres de contraseña
-    if tipo_usuario != 2  and len(contrasena) < 8:
-        messagebox.showwarning("Contraseña", "Ingrese una contraseña de al menos 8 dígitos", parent=ventana)
-        return
+    # Validaciónes para contraseña
+    #* Validación de usuario diferente a cliente (admin, empleado)
+    if tipo_usuario != 2:
+        #* Validación de contraseña vacía
+        if contrasena == '' or len(contrasena) < 8:
+            messagebox.showwarning("Contraseña", "Ingrese una contraseña de al menos 8 dígitos", parent=ventana)
+            return
     try:
         with sqlite3.connect("db/database.db") as conn:
             cursor = conn.cursor()
