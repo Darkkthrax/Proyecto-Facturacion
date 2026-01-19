@@ -408,8 +408,7 @@ def registrar_usuario(root, tipo_usuario = None):
     input_correo = tk.Entry(ventana_registro, width=30)
     input_correo.grid(row=5, column=1, padx=10, pady=5)    
     
-    input_contrasena = tk.Entry(ventana_registro, fg='grey')
-    input_contrasena.insert(0, "Dejar vacío si es cliente")
+    input_contrasena = tk.Entry(ventana_registro, width=30)
     
     opciones = traer_tipos()
     opcion_seleccionada = tk.StringVar()
@@ -420,8 +419,6 @@ def registrar_usuario(root, tipo_usuario = None):
         
         label_contrasena = ttk.Label(ventana_registro, text="Contraseña:")
         label_contrasena.grid(row=6, column=0, padx=5, pady=5, sticky="nsew")
-        input_contrasena.bind("<FocusIn>", lambda event: on_focus_in(event, entry=input_contrasena, placeholder="Dejar vacío si es cliente"))
-        input_contrasena.bind("<FocusOut>", lambda event: on_focus_out(event, entry=input_contrasena, placeholder="Dejar vacío si es cliente"))
         input_contrasena.grid(row=6, column=1, padx=5, pady=5, sticky="nsew")
         
         ttk.Label(ventana_registro, text="Tipo de usuario").grid(row=7, column=0, padx=5, pady=5, sticky="nsew")
