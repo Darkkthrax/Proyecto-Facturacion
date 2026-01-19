@@ -32,22 +32,34 @@ def verificar_usuario_db(id):
 def registrar_usuario_db(root, documento, nombre, apellidos, telefono, correo, contrasena, tipo_usuario, ventana):
     from auth.auth import iniciar_sesion
     from gui.facturacion import verificar_entradas_registro
+    correos = ['gmail', 'hotmail', 'outlook', 'yahoo']
+    #* Validación de entradas
+    if verificar_entradas_registro(documento, nombre, apellidos, telefono, correo, contrasena, tipo_usuario):
+        messagebox.showwarning("Campos vacíos", "Verifique que todos los campos esté llenos.", parent=ventana)
+        return
+    #* Validación de existencia de usuario
+    if verificar_usuario_db(documento):
+        messagebox.showwarning("Usuario duplicado", "Ya existe un usuario con el mismo documento. Modifique el documento", parent=ventana)
+        return
+    #* Validación de correo
+    if '@' not in correo:
+        messagebox.showerror("Registro", "Agregue un correo disponible", parent=ventana)
+        return
+    #* Validación de contraseña vacía
+    if contrasena == 'Dejar vacío si es cliente':
+        messagebox.showwarning("Contraseña", "Ingrese una contraseña", parent=ventana)
+        return
+    #* Validación de tipo de usuario y caracteres de contraseña
+    if tipo_usuario != 2  and len(contrasena) < 8:
+        messagebox.showwarning("Contraseña", "Ingrese una contraseña de al menos 8 dígitos", parent=ventana)
+        return
     try:
-        if verificar_entradas_registro(documento, nombre, apellidos, telefono, correo, contrasena, tipo_usuario):
-            messagebox.showwarning("Campos vacíos", "Verifique que todos los campos esté llenos.", parent=ventana)
-        elif verificar_usuario_db(documento):
-            messagebox.showwarning("Usuario duplicado", "Ya existe un usuario con el mismo documento. Modifique el documento", parent=ventana)
-        elif '@' not in correo:
-            messagebox.showerror("Registro", "Agregue un correo disponible", parent=ventana)
-        elif tipo_usuario != 2 and (contrasena == 'Dejar vacío si es cliente' or len(contrasena) < 8):
-            messagebox.showwarning("Digitos de contraseña", "Ingrese una contraseña de al menos 8 dígitos")
-        else:
-            with sqlite3.connect("db/database.db") as conn:
-                cursor = conn.cursor()
-                cursor.execute(f"INSERT INTO tbl_usuarios (documento_identidad, nombre, apellidos, contrasena, telefono, correo, tipo_usuario) VALUES ({documento}, '{nombre}', '{apellidos}', '{encriptar_contrasena(contrasena) if contrasena != '' else ''}', {telefono}, '{correo}', '{tipo_usuario}')")
-            messagebox.showinfo("Base de datos", "Usuario agregado correctamente", parent=ventana)
-            ventana.destroy()
-            if not get_sesion(): iniciar_sesion(root)
+        with sqlite3.connect("db/database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute(f"INSERT INTO tbl_usuarios (documento_identidad, nombre, apellidos, contrasena, telefono, correo, tipo_usuario) VALUES ('{documento}', '{nombre}', '{apellidos}', '{encriptar_contrasena(contrasena) if contrasena != '' else ''}', '{telefono}', '{correo}', '{tipo_usuario}')")
+        messagebox.showinfo("Base de datos", "Usuario agregado correctamente", parent=ventana)
+        ventana.destroy()
+        if not get_sesion(): iniciar_sesion(root)
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
 
