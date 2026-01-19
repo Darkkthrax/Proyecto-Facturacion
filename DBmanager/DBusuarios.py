@@ -32,7 +32,6 @@ def verificar_usuario_db(id):
 def registrar_usuario_db(root, documento, nombre, apellidos, telefono, correo, contrasena, tipo_usuario, ventana):
     from auth.auth import iniciar_sesion
     from gui.facturacion import verificar_entradas_registro
-    correos = ['gmail', 'hotmail', 'outlook', 'yahoo']
     #* Validación de entradas
     if verificar_entradas_registro(documento, nombre, apellidos, telefono, correo, contrasena, tipo_usuario):
         messagebox.showwarning("Campos vacíos", "Verifique que todos los campos esté llenos.", parent=ventana)
@@ -42,7 +41,7 @@ def registrar_usuario_db(root, documento, nombre, apellidos, telefono, correo, c
         messagebox.showwarning("Usuario duplicado", "Ya existe un usuario con el mismo documento. Modifique el documento", parent=ventana)
         return
     #* Validación de correo
-    if '@' not in correo:
+    if '@' not in correo or verificar_dominios(correo) or '.com' not in correo:
         messagebox.showerror("Registro", "Agregue un correo disponible", parent=ventana)
         return
     #* Validación de contraseña vacía
@@ -73,3 +72,11 @@ def encriptar_contrasena(contrasena):
     contrasena_hash = bcrypt.hashpw(password, salt)
     print(contrasena_hash.decode('utf-8'))
     return contrasena_hash.decode('utf-8')
+
+#! FUNCIÓN PARA VERIFICAR DOMINIOS DE CORREOS
+def verificar_dominios(correo):
+    dominios = ['gmail', 'hotmail', 'outlook', 'yahoo']
+    for dominio in dominios:
+        if dominio in correo:
+            return False
+    return True
