@@ -9,7 +9,7 @@ def traer_productos_db():
     try:
         with sqlite3.connect("db/database.db") as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM tbl_productos ORDER BY nombre_producto")
+            cursor.execute("SELECT * FROM tbl_productos ORDER BY nombre")
             return cursor.fetchall()
         
     except sqlite3.Error as e:
@@ -20,7 +20,7 @@ def traer_producto_id_db(id):
     try:
         with sqlite3.connect("db/database.db") as conn:
             cursor = conn.cursor()
-            cursor.execute(f"SELECT id_producto, nombre_producto, descripcion, precio_unitario FROM tbl_productos WHERE id_producto = '{id}'")
+            cursor.execute(f"SELECT id_producto, nombre, descripcion, precio_unitario FROM tbl_productos WHERE id_producto = '{id}'")
             return cursor.fetchone()
         
     except sqlite3.Error as e:
@@ -42,7 +42,7 @@ def traer_inventario_producto_nombre_db(nombre):
     try:
         with sqlite3.connect("db/database.db") as conn:
             cursor = conn.cursor()
-            cursor.execute(f"SELECT inventario FROM tbl_productos WHERE nombre_producto = '{nombre}'")
+            cursor.execute(f"SELECT inventario FROM tbl_productos WHERE nombre = '{nombre}'")
             return cursor.fetchone()
         
     except sqlite3.Error as e:
@@ -53,14 +53,14 @@ def traer_producto_nombre_db(nombre):
     try:
         with sqlite3.connect("db/database.db") as conn:
             cursor = conn.cursor()
-            cursor.execute(f"SELECT id_producto, nombre_producto, descripcion, precio_unitario FROM tbl_productos WHERE nombre_producto = '{nombre}'")
+            cursor.execute(f"SELECT id_producto, nombre, descripcion, precio_unitario FROM tbl_productos WHERE nombre = '{nombre}'")
             return cursor.fetchone()
         
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
 
 # Funcion para agregar un producto nuevo a 'tbl_prodcutos
-def agregar_producto_db(id, nombre, descripcion, inventario, precio, tabla, ventana, entradas):
+def agregar_producto_db(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, tabla, ventana, entradas):
     from utils.utils import verificar_productos
     try:
         if verificar_entradas_productos(id, nombre, descripcion, inventario, precio):
@@ -88,7 +88,7 @@ def editar_producto_db(id, nombre, descripcion, inventario, precio, tabla, venta
             print(f"id:{id}, nombre:{nombre}, descripcion:{descripcion}, inventario:{inventario}, precio:{precio}")
             with sqlite3.connect("db/database.db") as conn:
                 cursor = conn.cursor()
-                cursor.execute(f"UPDATE tbl_productos SET nombre_producto = '{nombre}', descripcion = '{descripcion}', inventario = {inventario}, precio_unitario = {precio} WHERE id_producto = {id}")
+                cursor.execute(f"UPDATE tbl_productos SET nombre = '{nombre}', descripcion = '{descripcion}', inventario = {inventario}, precio_unitario = {precio} WHERE id_producto = {id}")
             actualizar_datos_admin_productos(tabla)
             messagebox.showinfo("Base de datos", "Producto actualizado correctamente", parent=ventana)
             ventana.destroy()
