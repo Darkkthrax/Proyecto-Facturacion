@@ -46,7 +46,7 @@ def registrar_usuario_db(root, documento, nombre, apellidos, telefono, correo, c
         return
     # Validaciónes para contraseña
     #* Validación de usuario diferente a cliente (admin, empleado)
-    if tipo_usuario != 2:
+    if tipo_usuario != '2':
         #* Validación de contraseña vacía
         if contrasena == '' or len(contrasena) < 8:
             messagebox.showwarning("Contraseña", "Ingrese una contraseña de al menos 8 dígitos", parent=ventana)
