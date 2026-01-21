@@ -25,7 +25,7 @@ def crear_admin_unidades_medida(ventana):
     entrada_nueva_unidad.bind('<KeyRelease>', lambda event: verificar_entrada(entrada_nueva_unidad, 'Nueva unidad', btn_agregar_unidad))
     entrada_nueva_unidad.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
     
-    btn_agregar_unidad = tk.Button(frame_opciones, text='Agregar Unidad', bg="lightgreen")
+    btn_agregar_unidad = tk.Button(frame_opciones, text='Agregar Unidad', bg="lightgreen", state='disabled', command=lambda: agregar_unidad_medida(ventana_unidades_medida, entrada_nueva_unidad.get()))
     btn_agregar_unidad.grid(row=1, column=0, padx=5, pady=5, sticky='nsew')
     
     btn_editar_unidad = tk.Button(frame_opciones, text="Editar Unidad", state='disabled')
@@ -40,3 +40,12 @@ def crear_admin_unidades_medida(ventana):
     unidades = traer_unidades_medida()
     for unidad in unidades:
         tabla_unidades.insert('', tk.END, text=str(unidades.index(unidad)), values=unidad)
+
+def agregar_unidad_medida(ventana, nombre):
+    if nombre.strip() == '':
+        messagebox.showerror("Error", "Agregue un nombre a la unidad de medida", parent=ventana)
+        return
+    if traer_unidad_medida_nombre(nombre.strip().capitalize()) != None:
+        messagebox.showerror("Error", "Ya existe esta unidad de medida", parent=ventana)
+        return
+    crear_unidad_medida_db(ventana, nombre.strip().capitalize())
