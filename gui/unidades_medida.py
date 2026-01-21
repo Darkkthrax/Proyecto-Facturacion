@@ -1,5 +1,6 @@
 import tkinter as tk                    # Librería de interfaz gráfica
 from tkinter import ttk, messagebox
+from utils.entradas import verificar_entrada
 from DBmanager.DBunidades_medida import traer_unidades_medida, crear_unidad_medida_db, traer_unidad_medida_nombre
 
 def crear_admin_unidades_medida(ventana):
@@ -19,18 +20,22 @@ def crear_admin_unidades_medida(ventana):
     tabla_unidades.column('#0', width=50)
     tabla_unidades.heading('#1', text='Unidades de medida')
     tabla_unidades.column('#1', minwidth=70)
+
+    entrada_nueva_unidad = tk.Entry(frame_opciones)
+    entrada_nueva_unidad.bind('<KeyRelease>', lambda event: verificar_entrada(entrada_nueva_unidad, 'Nueva unidad', btn_agregar_unidad))
+    entrada_nueva_unidad.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
     
     btn_agregar_unidad = tk.Button(frame_opciones, text='Agregar Unidad', bg="lightgreen")
-    btn_agregar_unidad.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
+    btn_agregar_unidad.grid(row=1, column=0, padx=5, pady=5, sticky='nsew')
     
     btn_editar_unidad = tk.Button(frame_opciones, text="Editar Unidad", state='disabled')
-    btn_editar_unidad.grid(row=1, column=0, padx=5, pady=5, sticky='nsew')
+    btn_editar_unidad.grid(row=2, column=0, padx=5, pady=5, sticky='nsew')
     
     btn_eliminar_unidad = tk.Button(frame_opciones, text='Eliminar Unidad', state='disabled')
-    btn_eliminar_unidad.grid(row=2, column=0, padx=5, pady=5, sticky='nsew')
+    btn_eliminar_unidad.grid(row=3, column=0, padx=5, pady=5, sticky='nsew')
     
     btn_volver = tk.Button(frame_opciones, text='Cerrar')
-    btn_volver.grid(row=3, column=0, padx=5, pady=5, sticky='nsew')
+    btn_volver.grid(row=4, column=0, padx=5, pady=5, sticky='nsew')
     
     unidades = traer_unidades_medida()
     for unidad in unidades:
