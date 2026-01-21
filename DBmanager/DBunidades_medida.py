@@ -1,7 +1,7 @@
 import sqlite3
 from tkinter import messagebox
 
-def crear_unidad_medida_db(nombre):
+def crear_unidad_medida_db(ventana, nombre):
     try:
         with sqlite3.connect("db/database.db") as conn:
             cursor = conn.cursor()
@@ -11,8 +11,9 @@ def crear_unidad_medida_db(nombre):
                 cursor.execute(f"INSERT INTO tbl_unidad_medida (id_unidad, nombre) VALUES ({int(ultimo_id[0])+1}, '{nombre}')")
             else:
                 cursor.execute(f"INSERT INTO tbl_unidad_medida (id_unidad, nombre) VALUES (1, '{nombre}')")
+            messagebox.showinfo("Creación Exitosa", "Se agregó la unidad de medida correctamente", parent=ventana)
     except sqlite3.Error as e:
-        messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
+        messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
 
 def traer_unidades_medida():
     try:
