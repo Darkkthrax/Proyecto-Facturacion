@@ -20,3 +20,9 @@ def on_tree_select(event, tabla, btn1, btn2= None, entry = None):
 
 def on_mousewheel(event, treeview):
     treeview.yview_scroll(int(-1*(event.delta/120)), "units")
+
+def actualizar_tabla(tabla, datos):
+    for item in tabla.get_children():
+        tabla.delete(item)
+    for dato in datos:
+        tabla.insert('', tk.END, text=str(datos.index(dato)), values=dato)
