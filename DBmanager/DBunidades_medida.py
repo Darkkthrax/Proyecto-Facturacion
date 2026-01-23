@@ -33,6 +33,15 @@ def traer_unidad_medida_nombre(nombre):
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
 
+def editar_unidad_medida_db(ventana, nombre, nuevo_nombre):
+    try:
+        with sqlite3.connect("db/database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute(f"UPDATE tbl_unidad_medida SET nombre = '{nuevo_nombre}' WHERE nombre = '{nombre}'")
+        messagebox.showinfo("Editar Unidad", "Se actualizó correctamente la unidad de medida", parent=ventana)
+    except sqlite3.Error as e:
+        messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
+
 def eliminar_unidad_medida_db(id):
     try:
         with sqlite3.connect("db/database.db") as conn:
