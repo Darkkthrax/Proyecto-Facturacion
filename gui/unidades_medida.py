@@ -1,7 +1,8 @@
 import tkinter as tk                    # Librería de interfaz gráfica
 from tkinter import ttk, messagebox
-from utils.entradas import verificar_entrada
-from DBmanager.DBunidades_medida import traer_unidades_medida, crear_unidad_medida_db, traer_unidad_medida_nombre
+from utils.entradas import *
+from utils.arboles import on_tree_select, actualizar_tabla
+from DBmanager.DBunidades_medida import traer_unidades_medida, crear_unidad_medida_db, traer_unidad_medida_nombre, editar_unidad_medida_db
 
 def crear_admin_unidades_medida(ventana):
     ventana_unidades_medida = tk.Toplevel(ventana)
@@ -28,18 +29,26 @@ def crear_admin_unidades_medida(ventana):
     btn_agregar_unidad = tk.Button(frame_opciones, text='Agregar Unidad', bg="lightgreen", state='disabled', command=lambda: agregar_unidad_medida(ventana_unidades_medida, entrada_nueva_unidad.get()))
     btn_agregar_unidad.grid(row=1, column=0, padx=5, pady=5, sticky='nsew')
     
+    entrada_editar_unidad = tk.Entry(frame_opciones, state='disabled')
+    entrada_editar_unidad.bind('<KeyRelease>', lambda event: verificar_entrada(entrada_editar_unidad, 'Editar Unidad', btn_editar_unidad))
+    entrada_editar_unidad.bind("<FocusIn>", lambda event: on_focus_in(entrada_editar_unidad, 'Editar Unidad', tabla=tabla_unidades))
+    entrada_editar_unidad.bind("<FocusOut>", lambda event: on_focus_out(entrada_editar_unidad, 'Editar Unidad', tabla=tabla_unidades))
+    entrada_editar_unidad.grid(row=2, column=0, padx=5, pady=5, sticky='nsew')
+    
     btn_editar_unidad = tk.Button(frame_opciones, text="Editar Unidad", state='disabled')
-    btn_editar_unidad.grid(row=2, column=0, padx=5, pady=5, sticky='nsew')
+    btn_editar_unidad.grid(row=3, column=0, padx=5, pady=5, sticky='nsew')
     
     btn_eliminar_unidad = tk.Button(frame_opciones, text='Eliminar Unidad', state='disabled')
-    btn_eliminar_unidad.grid(row=3, column=0, padx=5, pady=5, sticky='nsew')
+    btn_eliminar_unidad.grid(row=4, column=0, padx=5, pady=5, sticky='nsew')
     
     btn_volver = tk.Button(frame_opciones, text='Cerrar')
-    btn_volver.grid(row=4, column=0, padx=5, pady=5, sticky='nsew')
+    btn_volver.grid(row=5, column=0, padx=5, pady=5, sticky='nsew')
     
     unidades = traer_unidades_medida()
     for unidad in unidades:
         tabla_unidades.insert('', tk.END, text=str(unidades.index(unidad)), values=unidad)
+    
+    tabla_unidades.bind('<<TreeviewSelect>>', lambda event: on_tree_select(event, tabla_unidades, btn_editar_unidad, btn_eliminar_unidad, entrada_editar_unidad))
 
 def agregar_unidad_medida(ventana, nombre):
     if nombre.strip() == '':
