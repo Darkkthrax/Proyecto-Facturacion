@@ -49,3 +49,12 @@ def eliminar_unidad_medida_db(id):
             cursor.execute(f"DELETE FROM tbl_unidad_medida WHERE id_unidad ='{id}'")
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
+
+def verificar_relacion(id):
+    try:
+        with sqlite3.connect("db/database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute(f"SELECT PR.Nombre, UM.Nombre FROM tbl_unidad_medida AS UM INNER JOIN tbl_productos AS PR ON UM.id_unidad = PR.unidad_medida WHERE UM.id_unidad = '{id}'")
+            return cursor.fetchone()
+    except sqlite3.Error as e:
+        messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
