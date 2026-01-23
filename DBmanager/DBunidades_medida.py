@@ -46,6 +46,6 @@ def eliminar_unidad_medida_db(id):
     try:
         with sqlite3.connect("db/database.db") as conn:
             cursor = conn.cursor()
-            cursor.execute(f"DELETE FROM tbl_unidad_medida WHERE id_producto ='{id}'")
+            cursor.execute(f"DELETE FROM tbl_unidad_medida WHERE id_unidad ='{id}'")
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
