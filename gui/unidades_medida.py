@@ -2,7 +2,7 @@ import tkinter as tk                    # Librería de interfaz gráfica
 from tkinter import ttk, messagebox
 from utils.entradas import *
 from utils.arboles import on_tree_select, actualizar_tabla
-from DBmanager.DBunidades_medida import traer_unidades_medida, crear_unidad_medida_db, traer_unidad_medida_nombre, editar_unidad_medida_db
+from DBmanager.DBunidades_medida import *
 
 def crear_admin_unidades_medida(ventana):
     ventana_unidades_medida = tk.Toplevel(ventana)
@@ -26,7 +26,7 @@ def crear_admin_unidades_medida(ventana):
     entrada_nueva_unidad.bind('<KeyRelease>', lambda event: verificar_entrada(entrada_nueva_unidad, 'Nueva unidad', btn_agregar_unidad))
     entrada_nueva_unidad.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
     
-    btn_agregar_unidad = tk.Button(frame_opciones, text='Agregar Unidad', bg="lightgreen", state='disabled', command=lambda: agregar_unidad_medida(ventana_unidades_medida, entrada_nueva_unidad.get()))
+    btn_agregar_unidad = tk.Button(frame_opciones, text='Agregar Unidad', bg="lightgreen", state='disabled', command=lambda: agregar_unidad_medida(ventana_unidades_medida, tabla_unidades, entrada_nueva_unidad))
     btn_agregar_unidad.grid(row=1, column=0, padx=5, pady=5, sticky='nsew')
     
     entrada_editar_unidad = tk.Entry(frame_opciones, state='disabled')
@@ -50,14 +50,16 @@ def crear_admin_unidades_medida(ventana):
     
     tabla_unidades.bind('<<TreeviewSelect>>', lambda event: on_tree_select(event, tabla_unidades, btn_editar_unidad, btn_eliminar_unidad, entrada_editar_unidad))
 
-def agregar_unidad_medida(ventana, nombre):
-    if nombre.strip() == '':
+def agregar_unidad_medida(ventana, tabla, entrada):
+    if entrada.get().strip() == '':
         messagebox.showerror("Error", "Agregue un nombre a la unidad de medida", parent=ventana)
         return
-    if traer_unidad_medida_nombre(nombre.strip().capitalize()) != None:
+    if traer_unidad_medida_nombre(entrada.get().strip().capitalize()) != None:
         messagebox.showerror("Error", "Ya existe esta unidad de medida", parent=ventana)
         return
-    crear_unidad_medida_db(ventana, nombre.strip().capitalize())
+    crear_unidad_medida_db(ventana, entrada.get().strip().capitalize())
+    entrada.delete(0, tk.END)
+    actualizar_tabla(tabla, traer_unidades_medida())
 
 def editar_unidad_medida(ventana, tabla, nuevo_nombre, entrada):
     unidad_seleccionada = tabla.item(tabla.selection()[0], 'values')[0]
