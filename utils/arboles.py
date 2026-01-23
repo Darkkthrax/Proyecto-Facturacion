@@ -15,6 +15,7 @@ def on_tree_select(event, tabla, btn1, btn2= None, entry = None):
         if btn2 != None:
             btn2.config(state='disabled')
         if entry != None:
+            entry.delete(0, tk.END)
             entry.config(state='disabled')
         btn1.config(state='disabled')
 
