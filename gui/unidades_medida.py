@@ -35,7 +35,7 @@ def crear_admin_unidades_medida(ventana):
     entrada_editar_unidad.bind("<FocusOut>", lambda event: on_focus_out(entrada_editar_unidad, 'Editar Unidad', tabla=tabla_unidades))
     entrada_editar_unidad.grid(row=2, column=0, padx=5, pady=5, sticky='nsew')
     
-    btn_editar_unidad = tk.Button(frame_opciones, text="Editar Unidad", state='disabled')
+    btn_editar_unidad = tk.Button(frame_opciones, text="Editar Unidad", state='disabled', command=lambda: editar_unidad_medida(ventana_unidades_medida, tabla_unidades, entrada_editar_unidad.get(), entrada_editar_unidad))
     btn_editar_unidad.grid(row=3, column=0, padx=5, pady=5, sticky='nsew')
     
     btn_eliminar_unidad = tk.Button(frame_opciones, text='Eliminar Unidad', state='disabled')
@@ -58,3 +58,20 @@ def agregar_unidad_medida(ventana, nombre):
         messagebox.showerror("Error", "Ya existe esta unidad de medida", parent=ventana)
         return
     crear_unidad_medida_db(ventana, nombre.strip().capitalize())
+
+def editar_unidad_medida(ventana, tabla, nuevo_nombre, entrada):
+    unidad_seleccionada = tabla.item(tabla.selection()[0], 'values')[0]
+
+    if nuevo_nombre.strip() == '':
+        messagebox.showerror("Error", "El nuevo nombre no puede estar vacío", parent=ventana)
+        return
+    
+    if traer_unidad_medida_nombre(nuevo_nombre.strip().capitalize()) != None:
+        messagebox.showerror("Error", "Ya existe esta unidad de medida", parent=ventana)
+        return
+    
+    if messagebox.askyesno("Editar Unidad", "¿Está seguro que quiere cambiar el nombre de esta unidad?\nTodo producto con esta unidad de medida será cambiado por la nueva unidad de medida",parent=ventana):
+        editar_unidad_medida_db(ventana, unidad_seleccionada, nuevo_nombre)
+        entrada.delete(0, tk.END)
+        actualizar_tabla(tabla, traer_unidades_medida())
+        return
