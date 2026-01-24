@@ -41,7 +41,7 @@ def crear_admin_unidades_medida(ventana):
     btn_eliminar_unidad = tk.Button(frame_opciones, text='Eliminar Unidad', state='disabled', command=lambda: eliminar_unidad_medida(ventana_unidades_medida, tabla_unidades))
     btn_eliminar_unidad.grid(row=4, column=0, padx=5, pady=5, sticky='nsew')
     
-    btn_volver = tk.Button(frame_opciones, text='Cerrar')
+    btn_volver = tk.Button(frame_opciones, text='Cerrar', command= ventana_unidades_medida.destroy)
     btn_volver.grid(row=5, column=0, padx=5, pady=5, sticky='nsew')
     
     unidades = traer_unidades_medida()
