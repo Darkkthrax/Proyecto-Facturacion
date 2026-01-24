@@ -38,7 +38,7 @@ def crear_admin_unidades_medida(ventana):
     btn_editar_unidad = tk.Button(frame_opciones, text="Editar Unidad", state='disabled', command=lambda: editar_unidad_medida(ventana_unidades_medida, tabla_unidades, entrada_editar_unidad))
     btn_editar_unidad.grid(row=3, column=0, padx=5, pady=5, sticky='nsew')
     
-    btn_eliminar_unidad = tk.Button(frame_opciones, text='Eliminar Unidad', state='disabled')
+    btn_eliminar_unidad = tk.Button(frame_opciones, text='Eliminar Unidad', state='disabled', command=lambda: eliminar_unidad_medida(ventana_unidades_medida, tabla_unidades))
     btn_eliminar_unidad.grid(row=4, column=0, padx=5, pady=5, sticky='nsew')
     
     btn_volver = tk.Button(frame_opciones, text='Cerrar')
@@ -76,4 +76,16 @@ def editar_unidad_medida(ventana, tabla, entrada):
         editar_unidad_medida_db(ventana, unidad_seleccionada, entrada.get())
         entrada.delete(0, tk.END)
         actualizar_tabla(tabla, traer_unidades_medida())
+        return
+
+def eliminar_unidad_medida(ventana, tabla):
+    seleccion = tabla.item(tabla.selection()[0], 'values')[0]
+    unidad = traer_unidad_medida_nombre(seleccion)
+    if verificar_relacion(unidad[0]):
+        messagebox.showerror("Error", "Ya existe al menos un producto con esta unidad de medida.\n\nElimine los productos con esta unidad de medida o edite la unidad de medida", parent=ventana)
+        return
+    if messagebox.askyesno("Eliminar Unidad Medida", "¿Desea eliminar esta unidad de medida?", parent=ventana):
+        eliminar_unidad_medida_db(unidad[0])
+        actualizar_tabla(tabla, traer_unidades_medida())
+        messagebox.showinfo("Eliminar Unidad Medida", "Unidad de medida eliminada correctamente", parent=ventana)
         return
