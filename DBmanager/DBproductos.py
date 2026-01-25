@@ -113,3 +113,7 @@ def eliminar_producto_db(id, ventana):
         messagebox.showinfo("Base de datos", "Producto eliminado correctamente", parent=ventana)
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
+
+# Función para verificar las entradas de agregar y editar producto
+def verificar_entradas_productos(id, nombre, descripcion, inventario, precio):
+    return str(id).strip == '' or nombre.strip() == '' or descripcion.strip() == '' or str(inventario).strip() == '' or str(precio).strip() == ''

@@ -105,9 +105,6 @@ def agregar_productos(root, tabla):
     btn_agregar = ttk.Button(ventana_agregar, text="Agregar", command=lambda: agregar_producto_db(input_id_producto.get(), input_nombre_producto.get(), input_descripcion.get(), input_inventario.get(), input_precio.get(), tabla, ventana_agregar, [input_id_producto, input_nombre_producto, input_descripcion, input_inventario, input_precio]))
     btn_agregar.grid(row=6, column=1, padx=10, pady=5)
 
-def verificar_entradas_productos(id, nombre, descripcion, inventario, precio):
-    return str(id).strip == '' or nombre.strip() == '' or descripcion.strip() == '' or str(inventario).strip() == '' or str(precio).strip() == ''
-
 # Función para editar el producto
 def editar_producto(root, tabla):
     from DBmanager.DBproductos import editar_producto_db
