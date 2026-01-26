@@ -1,6 +1,6 @@
 import sqlite3
 from tkinter import messagebox
-from gui.productos import verificar_entradas_productos, actualizar_datos_admin_productos
+from gui.productos import actualizar_datos_admin_productos
 from utils.entradas import borrar_entradas
 
 #! FUNCIONES EN DB PARA PRODUCTOS
@@ -59,7 +59,7 @@ def traer_producto_nombre_db(nombre):
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
 
-# Funcion para agregar un producto nuevo a 'tbl_prodcutos
+# Funcion para agregar un producto nuevo a 'tbl_productos
 def agregar_producto_db(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, tabla, ventana, entradas):
     from utils.utils import verificar_productos
     try:
