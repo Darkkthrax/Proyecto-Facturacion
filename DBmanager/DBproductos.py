@@ -60,10 +60,10 @@ def traer_producto_nombre_db(nombre):
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
 
 # Funcion para agregar un producto nuevo a 'tbl_productos
-def agregar_producto_db(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, tabla, ventana, entradas):
+def agregar_producto_db(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado, tabla, ventana, entradas):
     from utils.utils import verificar_productos
     try:
-        if verificar_entradas_productos(id, nombre, descripcion, inventario, precio):
+        if verificar_entradas_productos(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado):
             messagebox.showwarning("Campos vacíos", "Verifique que todos los campos esté llenos.", parent=ventana)
         else:
             if verificar_productos(id, nombre):
@@ -80,9 +80,9 @@ def agregar_producto_db(id, nombre, descripcion, marca, cantidad_venta, unidad_m
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
 
 # Función para editar un producto
-def editar_producto_db(id, nombre, descripcion, inventario, precio, tabla, ventana):
+def editar_producto_db(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado, tabla, ventana):
     try:
-        if verificar_entradas_productos(id, nombre, descripcion, inventario, precio):
+        if verificar_entradas_productos(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado):
             messagebox.showwarning("Campos vacíos", "Verifique que todos los campos esté llenos.", parent=ventana)
         else:
             print(f"id:{id}, nombre:{nombre}, descripcion:{descripcion}, inventario:{inventario}, precio:{precio}")
@@ -115,5 +115,10 @@ def eliminar_producto_db(id, ventana):
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
 
 # Función para verificar las entradas de agregar y editar producto
-def verificar_entradas_productos(id, nombre, descripcion, inventario, precio):
-    return str(id).strip == '' or nombre.strip() == '' or descripcion.strip() == '' or str(inventario).strip() == '' or str(precio).strip() == ''
+def verificar_entradas_productos(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado):
+    parametros = [id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado]
+    
+    for parametro in parametros:
+        if not str(parametro).strip():
+            return True
+    return False
