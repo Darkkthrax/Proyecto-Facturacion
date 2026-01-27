@@ -25,6 +25,7 @@ def iniciar_sesion(root):
     ttk.Label(ventana_inicio, text='Contraseña:').grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
     input_contrasena = ttk.Entry(ventana_inicio, width=30, show="*")
     input_contrasena.grid(row=2, column=1, padx=5, pady=5, sticky="nsew")
+    input_contrasena.bind('<Return>', lambda e: verificar_inicio_sesion(root, input_usuario.get(), input_contrasena.get(), [input_usuario, input_contrasena], ventana_inicio))
     
     btn_iniciar_sesion = ttk.Button(ventana_inicio, text="Iniciar sesión", command=lambda: verificar_inicio_sesion(root, input_usuario.get(), input_contrasena.get(), [input_usuario, input_contrasena], ventana_inicio))
     btn_iniciar_sesion.grid(row=3, column=1, padx=5, pady=5, sticky="nsew")
