@@ -9,7 +9,7 @@ def traer_productos_db():
     try:
         with sqlite3.connect("db/database.db") as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM tbl_productos ORDER BY nombre")
+            cursor.execute("SELECT PR.id_producto, PR.nombre, PR.descripcion, PR.marca, PR.cantidad_venta, UM.nombre, PR.precio_unitario, PR.inventario, PR.estado FROM tbl_productos AS PR INNER JOIN tbl_unidad_medida AS UM ON PR.unidad_medida = UM.id_unidad ORDER BY PR.nombre")
             return cursor.fetchall()
         
     except sqlite3.Error as e:
