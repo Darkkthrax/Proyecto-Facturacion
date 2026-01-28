@@ -9,7 +9,7 @@ from gui.unidades_medida import crear_admin_unidades_medida
 def crear_admin_productos(root):
     from utils.utils import regresar_menu, eliminar_producto
     from DBmanager.DBproductos import traer_productos_db
-    headers = ['ID', 'Id_Producto', 'Nombre_Producto', 'Descripción', 'Inventario', 'Precio_Unitario']
+    headers = ['ID', 'Codigo', 'Nombre', 'Descripción', 'Marca', 'Cantidad Venta', 'Precio', 'Inventario', 'Estado']
     ventana_productos = tk.Toplevel(root)
     ventana_productos.title("Administrar productos")
     ventana_productos.state(newstate='zoomed')
@@ -20,7 +20,8 @@ def crear_admin_productos(root):
     frame_opciones = tk.Frame(ventana_productos)
     frame_opciones.grid(row=1, column=1, padx=10, pady=5, sticky="nsew")
     
-    tabla_productos = ttk.Treeview(ventana_productos, columns=('#1', '#2', '#3', '#4', '#5'))
+    tabla_productos = ttk.Treeview(ventana_productos, columns=('#1', '#2', '#3', '#4', '#5', '#6', '#7', '#8'))
+    tabla_productos.column('#0', width=0, stretch=False)
     tabla_productos.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
     
     scrollbar = ttk.Scrollbar(ventana_productos, orient=tk.VERTICAL, command=tabla_productos.yview)
@@ -29,12 +30,27 @@ def crear_admin_productos(root):
     scrollbar.grid(row=1, column=0, padx=(0, 5), pady=5, sticky="nse")
     tabla_productos.bind("<MouseWheel>", lambda e: on_mousewheel(e, tabla_productos))
     
-    for i in range(len(headers)):
+    for i in range(1, len(headers)):
         tabla_productos.heading(f'#{i}', text=headers[i])
-        tabla_productos.column(f'#{i}', minwidth=100)
+        tabla_productos.column(f'#{i}', width=150, minwidth=80, stretch=True)
+
     productos = traer_productos_db()
     for fila in productos:
-        tabla_productos.insert('', tk.END, text=str(productos.index(fila)), values=fila)
+        valores = []
+        for i in range(0, len(fila)):
+            if i == 4:
+                valores.append(f'{str(fila[i])} {fila[i+1]}')
+                continue
+            if i == 5:
+                continue
+            if i == 8:
+                if fila[i] == 1:
+                    valores.append('Activo')
+                else:
+                    valores.append('Desactivado')
+                continue
+            valores.append(fila[i])
+        tabla_productos.insert('', tk.END, text=str(productos.index(fila)), values=valores)
     
     btn_regresar = tk.Button(frame_opciones, text="Volver", bg='skyblue', command=lambda: regresar_menu(root, ventana_productos))
     btn_regresar.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
@@ -55,7 +71,7 @@ def crear_admin_productos(root):
     ventana_productos.grid_columnconfigure(0, weight=3)
     ventana_productos.grid_columnconfigure(1, weight=1)
     
-    frame_opciones.grid_columnconfigure(1, weight=1)
+    frame_opciones.grid_columnconfigure(0, weight=1)
     
     tabla_productos.bind('<<TreeviewSelect>>', lambda event: on_tree_select(event, tabla_productos, btn_editar_producto, btn_eliminar_producto))
 
