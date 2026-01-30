@@ -88,7 +88,7 @@ def editar_producto_db(id, nombre, descripcion, marca, cantidad_venta, unidad_me
             print(f"id:{id}, nombre:{nombre}, descripcion:{descripcion}, inventario:{inventario}, precio:{precio}")
             with sqlite3.connect("db/database.db") as conn:
                 cursor = conn.cursor()
-                cursor.execute(f"UPDATE tbl_productos SET nombre = '{nombre}', descripcion = '{descripcion}', inventario = {inventario}, precio_unitario = {precio} WHERE id_producto = {id}")
+                cursor.execute(f"UPDATE tbl_productos SET nombre = '{nombre}', descripcion = '{descripcion}', marca = '{marca}', cantidad_venta = {cantidad_venta}, unidad_medida = {unidad_medida}, inventario = {inventario}, precio_unitario = {precio}, estado = {estado} WHERE id_producto = {id}")
             actualizar_datos_admin_productos(tabla)
             messagebox.showinfo("Base de datos", "Producto actualizado correctamente", parent=ventana)
             ventana.destroy()
