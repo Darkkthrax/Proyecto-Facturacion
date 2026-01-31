@@ -3,6 +3,7 @@ from tkinter import ttk
 from utils.arboles import *
 from utils.entradas import on_focus_in, on_focus_out
 from gui.unidades_medida import crear_admin_unidades_medida
+from DBmanager.DBunidades_medida import traer_unidades_medida
 
 #! FUNCIONES PARA BOTÓN ADMINISTRAR PRODUCTOS
 # Función para crear árbol de "administrar productos"
@@ -126,9 +127,11 @@ def editar_producto(root, tabla):
     from DBmanager.DBproductos import editar_producto_db
     producto_seleccionado = tabla.selection()[0]
     info_producto_seleccionado = tabla.item(producto_seleccionado, 'values')
+    cantidad_venta = info_producto_seleccionado[4].split()
+
     ventana_editar_producto = tk.Toplevel(root)
     ventana_editar_producto.title("Editar Producto")
-    ventana_editar_producto.geometry("400x300")
+    ventana_editar_producto.geometry("310x350")
     titulo_editar=ttk.Label(ventana_editar_producto, text=f"Editar {info_producto_seleccionado[1]}", font=("Arial", 16, "bold"))
     titulo_editar.grid(row=0, column=0, padx=5, pady=20, sticky="nw")
     
@@ -146,19 +149,55 @@ def editar_producto(root, tabla):
     input_nueva_descripcion.bind("<FocusOut>", lambda event: on_focus_out(input_nueva_descripcion, f"{info_producto_seleccionado[2]}"))
     input_nueva_descripcion.grid(row=2, column=1, padx=5, pady=5, sticky="nsew")
     
-    ttk.Label(ventana_editar_producto, text="Nueva cantidad:").grid(row=3, column=0, padx=10, pady=5)
-    input_nueva_cantidad = tk.Entry(ventana_editar_producto, fg='grey')
-    input_nueva_cantidad.insert(0, f"{info_producto_seleccionado[3]}")
-    input_nueva_cantidad.bind("<FocusIn>", lambda event: on_focus_in(input_nueva_cantidad, f"{info_producto_seleccionado[3]}"))
-    input_nueva_cantidad.bind("<FocusOut>", lambda event: on_focus_out(input_nueva_cantidad, f"{info_producto_seleccionado[3]}"))
-    input_nueva_cantidad.grid(row=3, column=1, padx=5, pady=5, sticky="nsew")
+    ttk.Label(ventana_editar_producto, text="Cambiar marca:").grid(row=3, column=0, padx=10, pady=5)
+    input_nueva_marca = tk.Entry(ventana_editar_producto, fg='grey')
+    input_nueva_marca.insert(0, f"{info_producto_seleccionado[3]}")
+    input_nueva_marca.bind("<FocusIn>", lambda event: on_focus_in(input_nueva_marca, f"{info_producto_seleccionado[3]}"))
+    input_nueva_marca.bind("<FocusOut>", lambda event: on_focus_out(input_nueva_marca, f"{info_producto_seleccionado[3]}"))
+    input_nueva_marca.grid(row=3, column=1, padx=5, pady=5, sticky="nsew")
     
-    ttk.Label(ventana_editar_producto, text="Nuevo precio:").grid(row=4, column=0, padx=10, pady=5)
+    ttk.Label(ventana_editar_producto, text="Cantidad de venta:").grid(row=4, column=0, padx=10, pady=5)
+    input_nueva_cantidad = tk.Entry(ventana_editar_producto, fg='grey')
+    input_nueva_cantidad.insert(0, f"{cantidad_venta[0]}")
+    input_nueva_cantidad.bind("<FocusIn>", lambda event: on_focus_in(input_nueva_cantidad, f"{cantidad_venta[0]}"))
+    input_nueva_cantidad.bind("<FocusOut>", lambda event: on_focus_out(input_nueva_cantidad, f"{cantidad_venta[0]}"))
+    input_nueva_cantidad.grid(row=4, column=1, padx=5, pady=5, sticky="nsew")
+    
+    ttk.Label(ventana_editar_producto, text="Unidad de medida:").grid(row=5, column=0, padx=10, pady=5)
+    unidades_medida = [unidad[0] for unidad in traer_unidades_medida()]
+    opcion_defecto_unidad = 0
+    for unidad in unidades_medida:
+        if unidad == cantidad_venta[1]:
+            opcion_defecto_unidad = unidades_medida.index(unidad)
+    opcion_seleccionada_unidad = tk.StringVar()
+    combo_unidades = ttk.Combobox(ventana_editar_producto, textvariable=opcion_seleccionada_unidad, values=unidades_medida, state='readonly')
+    ventana_editar_producto.after_idle(lambda: combo_unidades.current(opcion_defecto_unidad))
+    combo_unidades.grid(row=5, column=1, padx=10, pady=5, sticky='nsew')
+    
+    ttk.Label(ventana_editar_producto, text="Nuevo precio:").grid(row=6, column=0, padx=10, pady=5)
     input_nuevo_precio = tk.Entry(ventana_editar_producto, fg='grey')
-    input_nuevo_precio.insert(0, f"{info_producto_seleccionado[4]}")
-    input_nuevo_precio.bind("<FocusIn>", lambda event: on_focus_in(input_nuevo_precio, f"{info_producto_seleccionado[4]}"))
-    input_nuevo_precio.bind("<FocusOut>", lambda event: on_focus_out(input_nuevo_precio, f"{info_producto_seleccionado[4]}"))
-    input_nuevo_precio.grid(row=4, column=1, padx=5, pady=5, sticky="nsew")
+    input_nuevo_precio.insert(0, f"{info_producto_seleccionado[5]}")
+    input_nuevo_precio.bind("<FocusIn>", lambda event: on_focus_in(input_nuevo_precio, f"{info_producto_seleccionado[5]}"))
+    input_nuevo_precio.bind("<FocusOut>", lambda event: on_focus_out(input_nuevo_precio, f"{info_producto_seleccionado[5]}"))
+    input_nuevo_precio.grid(row=6, column=1, padx=5, pady=5, sticky="nsew")
+    
+    ttk.Label(ventana_editar_producto, text='Inventario:').grid(row=7, column=0, padx=10, pady=5)
+    input_nuevo_inventario = tk.Entry(ventana_editar_producto, fg='grey')
+    input_nuevo_inventario.insert(0, f"{info_producto_seleccionado[6]}")
+    input_nuevo_inventario.bind("<FocusIn>", lambda event: on_focus_in(input_nuevo_inventario, f"{info_producto_seleccionado[6]}"))
+    input_nuevo_inventario.bind("<FocusOut>", lambda event: on_focus_out(input_nuevo_inventario, f"{info_producto_seleccionado[6]}"))
+    input_nuevo_inventario.grid(row=7, column=1, padx=5, pady=5, sticky="nsew")
+    
+    ttk.Label(ventana_editar_producto, text='Estado:').grid(row=8, column=0, padx=10, pady=5)
+    estados = ['Activo', 'Inactivo']
+    opcion_defecto_estado = 0
+    for estado in estados:
+        if estado == info_producto_seleccionado[7]:
+            opcion_defecto_estado = estados.index(estado)
+    opcion_seleccionada_estado = tk.StringVar()
+    combo_estados = ttk.Combobox(ventana_editar_producto, textvariable=opcion_seleccionada_estado, values=estados, state='readonly')
+    ventana_editar_producto.after_idle(lambda: combo_estados.current(opcion_defecto_estado))
+    combo_estados.grid(row=8, column=1, padx=10, pady=5, sticky='nsew')
     
     btn_actualizar = ttk.Button(ventana_editar_producto, text="Actualizar", command=lambda: editar_producto_db(info_producto_seleccionado[0], input_nuevo_nombre.get(), input_nueva_descripcion.get(), input_nueva_cantidad.get(), input_nuevo_precio.get(), tabla, ventana_editar_producto))
-    btn_actualizar.grid(row=5, column=0, columnspan=2, padx=10, pady=5, sticky='nsew')
+    btn_actualizar.grid(row=9, column=0, columnspan=2, padx=10, pady=5, sticky='nsew')
