@@ -1,5 +1,6 @@
 import sqlite3
 from tkinter import messagebox
+from DBmanager.DBunidades_medida import traer_unidad_medida_nombre
 from gui.productos import actualizar_datos_admin_productos
 from utils.entradas import borrar_entradas
 
@@ -81,19 +82,20 @@ def agregar_producto_db(id, nombre, descripcion, marca, cantidad_venta, unidad_m
 
 # Función para editar un producto
 def editar_producto_db(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado, tabla, ventana):
-    try:
-        if verificar_entradas_productos(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado):
-            messagebox.showwarning("Campos vacíos", "Verifique que todos los campos esté llenos.", parent=ventana)
-        else:
-            print(f"id:{id}, nombre:{nombre}, descripcion:{descripcion}, inventario:{inventario}, precio:{precio}")
-            with sqlite3.connect("db/database.db") as conn:
-                cursor = conn.cursor()
-                cursor.execute(f"UPDATE tbl_productos SET nombre = '{nombre}', descripcion = '{descripcion}', marca = '{marca}', cantidad_venta = {cantidad_venta}, unidad_medida = {unidad_medida}, inventario = {inventario}, precio_unitario = {precio}, estado = {estado} WHERE id_producto = {id}")
-            actualizar_datos_admin_productos(tabla)
-            messagebox.showinfo("Base de datos", "Producto actualizado correctamente", parent=ventana)
-            ventana.destroy()
-    except sqlite3.Error as e:
-        messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
+    if messagebox.askyesno("Actualizar Producto", "¿Desea actualizar este producto?\n\nConfirme la acción:", parent=ventana):
+        try:
+            if verificar_entradas_productos(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado):
+                messagebox.showwarning("Campos vacíos", "Verifique que todos los campos esté llenos.", parent=ventana)
+            else:
+                unidad = traer_unidad_medida_nombre(unidad_medida)
+                with sqlite3.connect("db/database.db") as conn:
+                    cursor = conn.cursor()
+                    cursor.execute(f"UPDATE tbl_productos SET nombre = '{nombre}', descripcion = '{descripcion}', marca = '{marca}', cantidad_venta = {cantidad_venta}, unidad_medida = {unidad[0]}, inventario = {inventario}, precio_unitario = {precio}, estado = {1 if estado == 'Activo' else 2} WHERE id_producto = {id}")
+                actualizar_datos_admin_productos(tabla)
+                messagebox.showinfo("Base de datos", "Producto actualizado correctamente", parent=ventana)
+                ventana.destroy()
+        except sqlite3.Error as e:
+            messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
 
 # Funcion para editar el inventario en la base de datos
 def editar_inventario_producto(id, inventario, ventana):
