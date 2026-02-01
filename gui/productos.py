@@ -83,7 +83,21 @@ def actualizar_datos_admin_productos(tabla):
         tabla.delete(item)
     productos = traer_productos_db()
     for fila in productos:
-        tabla.insert('', tk.END, text=str(productos.index(fila)), values=fila)
+        valores = []
+        for i in range(0, len(fila)):
+            if i == 4:
+                valores.append(f'{str(fila[i])} {fila[i+1]}')
+                continue
+            if i == 5:
+                continue
+            if i == 8:
+                if fila[i] == 1:
+                    valores.append('Activo')
+                else:
+                    valores.append('Desactivado')
+                continue
+            valores.append(fila[i])
+        tabla.insert('', tk.END, text=str(productos.index(fila)), values=valores)
 
 # Función para agregar productos
 def agregar_productos(root, tabla):
@@ -199,5 +213,5 @@ def editar_producto(root, tabla):
     ventana_editar_producto.after_idle(lambda: combo_estados.current(opcion_defecto_estado))
     combo_estados.grid(row=8, column=1, padx=10, pady=5, sticky='nsew')
     
-    btn_actualizar = ttk.Button(ventana_editar_producto, text="Actualizar", command=lambda: editar_producto_db(info_producto_seleccionado[0], input_nuevo_nombre.get(), input_nueva_descripcion.get(), input_nueva_cantidad.get(), input_nuevo_precio.get(), tabla, ventana_editar_producto))
+    btn_actualizar = ttk.Button(ventana_editar_producto, text="Actualizar", command=lambda: editar_producto_db(info_producto_seleccionado[0], input_nuevo_nombre.get(), input_nueva_descripcion.get(), input_nueva_marca.get(), input_nueva_cantidad.get(), combo_unidades.get(), input_nuevo_precio.get(), input_nuevo_inventario.get(), combo_estados.get(), tabla, ventana_editar_producto))
     btn_actualizar.grid(row=9, column=0, columnspan=2, padx=10, pady=5, sticky='nsew')
