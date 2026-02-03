@@ -104,7 +104,7 @@ def agregar_productos(root, tabla):
     from DBmanager.DBproductos import agregar_producto_db
     ventana_agregar = tk.Toplevel(root)
     ventana_agregar.title("Agregar Producto")
-    ventana_agregar.geometry("400x300")
+    ventana_agregar.geometry("400x400")
     titulo_agregar=ttk.Label(ventana_agregar, text="Agregar producto")
     titulo_agregar.grid(row=0, column=0, padx=5, pady=20, sticky="nw")
     
@@ -123,18 +123,38 @@ def agregar_productos(root, tabla):
     input_descripcion = tk.Entry(ventana_agregar, width=30)
     input_descripcion.grid(row=3, column=1, padx=10, pady=5)
     
+    ttk.Label(ventana_agregar, text='Marca:').grid(row=4, column=0, padx=10, pady=5)
+    input_marca = tk.Entry(ventana_agregar, width=30)
+    input_marca.grid(row=4, column=1, padx=10, pady=5)
+    
+    ttk.Label(ventana_agregar, text='Cantidad de Venta:').grid(row=5, column=0, padx=10, pady=5)
+    input_cantidad_venta = tk.Entry(ventana_agregar, width=30)
+    input_cantidad_venta.grid(row=5, column=1, padx=10, pady=5)
+    
+    ttk.Label(ventana_agregar, text='Unidad de Medida:').grid(row=6, column=0, padx=10, pady=5)
+    unidades_medida = traer_unidades_medida()
+    combo_unidades = ttk.Combobox(ventana_agregar, values=unidades_medida, state='readonly')
+    combo_unidades.grid(row=6, column=1, padx=10, pady=5)
+    combo_unidades.current(0)
+    
     label_inventario = ttk.Label(ventana_agregar, text="Inventario:")
-    label_inventario.grid(row=4, column=0, padx=10, pady=5)
+    label_inventario.grid(row=7, column=0, padx=10, pady=5)
     input_inventario = tk.Entry(ventana_agregar, width=30)
-    input_inventario.grid(row=4, column=1, padx=10, pady=5)
+    input_inventario.grid(row=7, column=1, padx=10, pady=5)
     
     label_precio = ttk.Label(ventana_agregar, text="Precio Unitario:")
-    label_precio.grid(row=5, column=0, padx=10, pady=5)
+    label_precio.grid(row=8, column=0, padx=10, pady=5)
     input_precio = tk.Entry(ventana_agregar, width=30)
-    input_precio.grid(row=5, column=1, padx=10, pady=5)
+    input_precio.grid(row=8, column=1, padx=10, pady=5)
+    
+    ttk.Label(ventana_agregar, text='Estado Inicial:').grid(row=9, column=0, padx=10, pady=5)
+    estados = ['Activo', 'Inactivo']
+    combo_estados = ttk.Combobox(ventana_agregar, values=estados, state='readonly')
+    combo_estados.grid(row=9, column=1, padx=10, pady=5)
+    combo_estados.current(0)
     
     btn_agregar = ttk.Button(ventana_agregar, text="Agregar", command=lambda: agregar_producto_db(input_id_producto.get(), input_nombre_producto.get(), input_descripcion.get(), input_inventario.get(), input_precio.get(), tabla, ventana_agregar, [input_id_producto, input_nombre_producto, input_descripcion, input_inventario, input_precio]))
-    btn_agregar.grid(row=6, column=1, padx=10, pady=5)
+    btn_agregar.grid(row=10, column=1, padx=10, pady=5)
 
 # Función para editar el producto
 def editar_producto(root, tabla):
