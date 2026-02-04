@@ -153,7 +153,7 @@ def agregar_productos(root, tabla):
     combo_estados.grid(row=9, column=1, padx=10, pady=5)
     combo_estados.current(0)
     
-    btn_agregar = ttk.Button(ventana_agregar, text="Agregar", command=lambda: agregar_producto_db(input_id_producto.get(), input_nombre_producto.get(), input_descripcion.get(), input_inventario.get(), input_precio.get(), tabla, ventana_agregar, [input_id_producto, input_nombre_producto, input_descripcion, input_inventario, input_precio]))
+    btn_agregar = ttk.Button(ventana_agregar, text="Agregar", command=lambda: agregar_producto_db(input_id_producto, input_nombre_producto, input_descripcion, input_marca, input_cantidad_venta, combo_unidades, input_precio, input_inventario, combo_estados, tabla, ventana_agregar))
     btn_agregar.grid(row=10, column=1, padx=10, pady=5)
 
 # Función para editar el producto
