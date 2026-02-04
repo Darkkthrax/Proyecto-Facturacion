@@ -61,21 +61,20 @@ def traer_producto_nombre_db(nombre):
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
 
 # Funcion para agregar un producto nuevo a 'tbl_productos
-def agregar_producto_db(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado, tabla, ventana, entradas):
-    from utils.utils import verificar_productos
+def agregar_producto_db(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado, tabla, ventana):
     try:
         if verificar_entradas_productos(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado):
             messagebox.showwarning("Campos vacíos", "Verifique que todos los campos esté llenos.", parent=ventana)
         else:
-            if verificar_productos(id, nombre):
-                messagebox.showwarning("Producto duplicado", "Ya existe un producto con la misma ID o el mismo nombre. Modifique alguno de los parámetros", parent=ventana)
+            if traer_producto_id_db(id):
+                messagebox.showwarning("Producto duplicado", "Ya existe un producto con la misma ID.", parent=ventana)
             else:
-                print(f"id:{id}, nombre:{nombre}, descripcion:{descripcion}, inventario:{inventario}, precio:{precio}")
+                unidad_seleccionada = traer_unidad_medida_nombre(unidad_medida.get())
                 with sqlite3.connect("db/database.db") as conn:
                     cursor = conn.cursor()
-                    cursor.execute(f"INSERT INTO tbl_productos (id_producto, nombre_producto, descripcion, inventario, precio_unitario) VALUES ({id}, '{nombre}', '{descripcion}', {inventario}, {precio})")
+                    cursor.execute(f"INSERT INTO tbl_productos (id_producto, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio_unitario, inventario, estado) VALUES ({id.get()}, '{nombre.get()}', '{descripcion.get()}', '{marca.get()}', {cantidad_venta.get()}, {unidad_seleccionada[0]}, {precio.get()}, {inventario.get()}, {1 if estado.get() == 'Activo' else 2})")
                 actualizar_datos_admin_productos(tabla)
-                borrar_entradas(entradas)
+                borrar_entradas([id, nombre, descripcion, marca, cantidad_venta, precio, inventario])
                 messagebox.showinfo("Base de datos", "Producto agregado correctamente", parent=ventana)
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
