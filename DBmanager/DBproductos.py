@@ -96,22 +96,21 @@ def editar_producto_db(id, nombre, descripcion, marca, cantidad_venta, unidad_me
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
 
+# Funcion para activar o desactivar productos
+def editar_estado_producto(id, estado, ventana):
+    try:
+        with sqlite3.connect("db/database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute(f"UPDATE tbl_productos SET estado = {estado} WHERE id_producto = {id}")
+    except sqlite3.Error as e:
+        messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
+
 # Funcion para editar el inventario en la base de datos
 def editar_inventario_producto(id, inventario, ventana):
     try:
         with sqlite3.connect("db/database.db") as conn:
             cursor = conn.cursor()
             cursor.execute(f"UPDATE tbl_productos SET inventario = {inventario} WHERE id_producto = {id}")
-    except sqlite3.Error as e:
-        messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
-
-# Función para eliminar un producto
-def eliminar_producto_db(id, ventana):
-    try:
-        with sqlite3.connect("db/database.db") as conn:
-            cursor = conn.cursor()
-            cursor.execute(f"DELETE FROM tbl_productos WHERE id_producto = {id}")
-        messagebox.showinfo("Base de datos", "Producto eliminado correctamente", parent=ventana)
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
 
