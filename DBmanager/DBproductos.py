@@ -114,6 +114,25 @@ def editar_inventario_producto(id, inventario, ventana):
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
 
+# Función para eliminar un producto
+def eliminar_producto_db(id, ventana):
+    from DBmanager.DBfacturacion import traer_facturas_producto_db
+    if traer_facturas_producto_db(id):
+        if messagebox.askyesno('Eliminar', 'Ya existen facturas con este producto.\n\n¿Desea desactivar el producto?', icon='question', parent=ventana):
+            editar_estado_producto(id, 0, ventana)
+            return False
+    else:
+        if messagebox.askyesno('Eliminar', 'Confirme la eliminación del producto.\n\nSe eliminará toda la información del producto', icon='warning', parent=ventana):
+            try:
+                with sqlite3.connect("db/database.db") as conn:
+                    cursor = conn.cursor()
+                    cursor.execute(f"DELETE FROM tbl_productos WHERE id_producto = {id}")
+                messagebox.showinfo("Base de datos", "Producto eliminado correctamente", parent=ventana)
+                return True
+            except sqlite3.Error as e:
+                messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
+                return False
+
 # Función para verificar las entradas de agregar y editar producto
 def verificar_entradas_productos(id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado):
     parametros = [id, nombre, descripcion, marca, cantidad_venta, unidad_medida, precio, inventario, estado]
