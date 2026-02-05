@@ -29,19 +29,20 @@ def regresar_menu(root, ventana):
 
 # Funcion para eliminar un producto de las tablas y la base de datos
 def eliminar_producto(tabla, ventana, frame = None, db = False):
-    productos_factura = get_productos_factura()
+    producto_seleccionado = tabla.selection()[0]
+    info_producto_seleccionado = tabla.item(producto_seleccionado, 'values')
+    if db:
+        if eliminar_producto_db(info_producto_seleccionado[0], ventana):
+            tabla.delete(producto_seleccionado)
+        return
     if messagebox.askyesno("Eliminar producto", "Confirme la eliminación del producto", parent=ventana):
-        producto_seleccionado = tabla.selection()[0]
-        info_producto_seleccionado = tabla.item(producto_seleccionado, 'values')
+        productos_factura = get_productos_factura()
         if productos_factura != []:
             for i in range(len(productos_factura)):
                 if int(info_producto_seleccionado[0]) in productos_factura[i]:
                     del productos_factura[i]
                     set_productos_factura(productos_factura)
                     break
-        if db:
-            eliminar_producto_db(info_producto_seleccionado[0], ventana)
-        else:
-            verificar_producto_usuario_factura(frame, ventana)
+        verificar_producto_usuario_factura(frame, ventana)
         tabla.delete(producto_seleccionado)
 
