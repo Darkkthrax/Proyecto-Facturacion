@@ -31,6 +31,16 @@ def crear_factura_db(id, fecha, total_sin, total_imp, total_final, ventana):
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}", parent=ventana)
 
+# Función para traer las facturas de un producto
+def traer_facturas_producto_db(id_producto):
+    try:
+        with sqlite3.connect('db/database.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute(f"SELECT * FROM tbl_productos_factura WHERE id_producto = {id_producto}")
+            return cursor.fetchall()
+    except sqlite3.Error as e:
+        messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
+
 # Función para llamar a todas las facturas en la base de datos
 def traer_facturas_db():
     try:
