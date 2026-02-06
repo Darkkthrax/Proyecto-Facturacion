@@ -223,7 +223,7 @@ def editar_producto(root, tabla):
     input_nuevo_inventario.grid(row=7, column=1, padx=5, pady=5, sticky="nsew")
     
     ttk.Label(ventana_editar_producto, text='Estado:').grid(row=8, column=0, padx=10, pady=5)
-    estados = ['Activo', 'Inactivo']
+    estados = ['Activo', 'Desactivado']
     opcion_defecto_estado = 0
     for estado in estados:
         if estado == info_producto_seleccionado[7]:
