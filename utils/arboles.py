@@ -9,7 +9,7 @@ def on_tree_select(event, tabla, btn1, btn2= None, entry = None):
         if entry != None:
             entry.delete(0, tk.END)
             entry.config(state='normal', fg='grey')
-            entry.insert(0, tabla.item(producto_seleccionado, 'values'))
+            entry.insert(0, tabla.item(producto_seleccionado, 'values')[0])
         btn1.config(state='normal')
     else:
         if btn2 != None:

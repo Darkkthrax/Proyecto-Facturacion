@@ -16,7 +16,7 @@ def on_focus_in(entry, placeholder, tabla = None):
 def on_focus_out(entry, placeholder, tabla = None):
     if tabla != None and tabla.selection():
         if entry.get() == '':
-            entry.insert(0, tabla.item(tabla.selection()[0], 'values'))
+            entry.insert(0, tabla.item(tabla.selection()[0], 'values')[0])
             entry.config(fg='grey')
             return
     if entry.get() == "":
