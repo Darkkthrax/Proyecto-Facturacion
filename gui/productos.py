@@ -65,7 +65,7 @@ def crear_admin_productos(root):
     btn_eliminar_producto = tk.Button(frame_opciones, text="Eliminar", bg="pink", command=lambda: eliminar_producto(tabla_productos, ventana_productos, db= True), state='disabled')
     btn_eliminar_producto.grid(row=3, column=0, padx=5, pady=5, sticky="nsew")
     
-    btn_ver_unidades = tk.Button(frame_opciones, text="Ver Unidades Medida", command=lambda: crear_admin_unidades_medida(ventana_productos))
+    btn_ver_unidades = tk.Button(frame_opciones, text="Ver Unidades Medida", command=lambda: crear_admin_unidades_medida(ventana_productos, tabla_productos))
     btn_ver_unidades.grid(row=4, column=0, padx=5, pady=5, sticky='nsew')
     
     ventana_productos.grid_rowconfigure(1, weight=1)

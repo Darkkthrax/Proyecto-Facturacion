@@ -4,7 +4,7 @@ from utils.entradas import *
 from utils.arboles import on_tree_select, actualizar_tabla
 from DBmanager.DBunidades_medida import *
 
-def crear_admin_unidades_medida(ventana):
+def crear_admin_unidades_medida(ventana, tabla_productos):
     ventana_unidades_medida = tk.Toplevel(ventana)
     ventana_unidades_medida.title("Unidades de Medida")
     
@@ -35,7 +35,7 @@ def crear_admin_unidades_medida(ventana):
     entrada_editar_unidad.bind("<FocusOut>", lambda event: on_focus_out(entrada_editar_unidad, 'Editar Unidad', tabla=tabla_unidades))
     entrada_editar_unidad.grid(row=2, column=0, padx=5, pady=5, sticky='nsew')
     
-    btn_editar_unidad = tk.Button(frame_opciones, text="Editar Unidad", state='disabled', command=lambda: editar_unidad_medida(ventana_unidades_medida, tabla_unidades, entrada_editar_unidad))
+    btn_editar_unidad = tk.Button(frame_opciones, text="Editar Unidad", state='disabled', command=lambda: editar_unidad_medida(ventana_unidades_medida, tabla_unidades, entrada_editar_unidad, tabla_productos))
     btn_editar_unidad.grid(row=3, column=0, padx=5, pady=5, sticky='nsew')
     
     btn_eliminar_unidad = tk.Button(frame_opciones, text='Eliminar Unidad', bg='pink', state='disabled', command=lambda: eliminar_unidad_medida(ventana_unidades_medida, tabla_unidades))
@@ -61,7 +61,8 @@ def agregar_unidad_medida(ventana, tabla, entrada):
     entrada.delete(0, tk.END)
     actualizar_tabla(tabla, traer_unidades_medida())
 
-def editar_unidad_medida(ventana, tabla, entrada):
+def editar_unidad_medida(ventana, tabla, entrada, tabla_productos):
+    from .productos import actualizar_datos_admin_productos
     unidad_seleccionada = tabla.item(tabla.selection()[0], 'values')[0]
 
     if entrada.get().strip() == '':
@@ -76,6 +77,7 @@ def editar_unidad_medida(ventana, tabla, entrada):
         editar_unidad_medida_db(ventana, unidad_seleccionada, entrada.get())
         entrada.delete(0, tk.END)
         actualizar_tabla(tabla, traer_unidades_medida())
+        actualizar_datos_admin_productos(tabla_productos)
         return
 
 def eliminar_unidad_medida(ventana, tabla):
