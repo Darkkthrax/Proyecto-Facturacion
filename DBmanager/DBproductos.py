@@ -16,6 +16,17 @@ def traer_productos_db():
     except sqlite3.Error as e:
         messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
 
+# Función para traer todos los productos de una busqueda
+def traer_productos_busqueda_db(nombre):
+    try:
+        with sqlite3.connect("db/database.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute(f"SELECT PR.id_producto, PR.nombre, PR.marca, PR.cantidad_venta, UM.nombre, PR.precio_unitario FROM tbl_productos AS PR INNER JOIN tbl_unidad_medida AS UM ON PR.unidad_medida = UM.id_unidad WHERE PR.estado == 1 AND PR.nombre LIKE '%{nombre}%' OR PR.descripcion LIKE '%{nombre}%' ORDER BY PR.nombre")
+            return cursor.fetchall()
+        
+    except sqlite3.Error as e:
+        messagebox.showerror("Error", f"El archivo es corrupto o no es una base de datos {e}")
+
 # Función para traer solo 1 producto por ID
 def traer_producto_id_db(id):
     try:
