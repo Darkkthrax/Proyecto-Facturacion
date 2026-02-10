@@ -21,7 +21,7 @@ def traer_productos_busqueda_db(nombre):
     try:
         with sqlite3.connect("db/database.db") as conn:
             cursor = conn.cursor()
-            cursor.execute(f"SELECT PR.id_producto, PR.nombre, PR.descripcion, PR.marca, PR.cantidad_venta, UM.nombre, PR.precio_unitario FROM tbl_productos AS PR INNER JOIN tbl_unidad_medida AS UM ON PR.unidad_medida = UM.id_unidad WHERE PR.estado == 1 AND PR.nombre LIKE '%{nombre}%' OR PR.descripcion LIKE '%{nombre}%' ORDER BY PR.nombre")
+            cursor.execute(f"SELECT PR.id_producto, PR.nombre, PR.descripcion, PR.marca, PR.cantidad_venta, UM.nombre, PR.precio_unitario FROM tbl_productos AS PR INNER JOIN tbl_unidad_medida AS UM ON PR.unidad_medida = UM.id_unidad WHERE PR.estado == 1 AND (PR.nombre LIKE '%{nombre}%' OR PR.descripcion LIKE '%{nombre}%') ORDER BY PR.nombre")
             return cursor.fetchall()
         
     except sqlite3.Error as e:
