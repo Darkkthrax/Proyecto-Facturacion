@@ -12,6 +12,7 @@ from DBmanager.DBproductos import traer_inventario_producto_id_db, traer_inventa
 from DBmanager.DBfacturacion import traer_ultima_id_factura_db, crear_factura_db
 from DBmanager.DBusuarios import verificar_usuario_db, registrar_usuario_db
 from DBmanager.DBtipo_usuarios import traer_tipos
+from .buscar_productos import *
 from models.models import get_usuario, set_productos_factura, get_productos_factura, get_cliente, set_cliente, info_empresa
 
 #! FUNCIONES PARA BOTÓN FACTURAR
@@ -52,12 +53,15 @@ def facturar_productos(root):
     buscador_codigo.bind("<FocusOut>", lambda event: on_focus_out(buscador_codigo, "Agregar por código"))
     buscador_codigo.grid(row=2, column=1, padx=5, pady=5, sticky="nsew")
     
-    ttk.Label(frame_busqueda, text="Por nombre:").grid(row=3, column=0, padx=5, pady=2, sticky="w")
-    buscador_nombre = tk.Entry(frame_busqueda, fg='grey')
-    buscador_nombre.insert(0, "Agregar por nombre")
-    buscador_nombre.bind("<FocusIn>", lambda event: on_focus_in(buscador_nombre, "Agregar por nombre"))
-    buscador_nombre.bind("<FocusOut>", lambda event: on_focus_out(buscador_nombre, "Agregar por nombre"))
-    buscador_nombre.grid(row=3, column=1, padx=5, pady=5, sticky="nsew")
+    btn_buscar_nombre = ttk.Button(frame_busqueda, text='Buscar Nombre', command= lambda: buscar_producto(root))
+    btn_buscar_nombre.grid(row=3, column=1, padx=5, pady=5, sticky='nsew')
+    
+    # ttk.Label(frame_busqueda, text="Por nombre:").grid(row=3, column=0, padx=5, pady=2, sticky="w")
+    # buscador_nombre = tk.Entry(frame_busqueda, fg='grey')
+    # buscador_nombre.insert(0, "Agregar por nombre")
+    # buscador_nombre.bind("<FocusIn>", lambda event: on_focus_in(buscador_nombre, "Agregar por nombre"))
+    # buscador_nombre.bind("<FocusOut>", lambda event: on_focus_out(buscador_nombre, "Agregar por nombre"))
+    # buscador_nombre.grid(row=3, column=1, padx=5, pady=5, sticky="nsew")
     
     ttk.Label(frame_busqueda, text="Cantidad", font=("Arial", 10, "bold"), anchor='center').grid(row=4, column=0, columnspan=2, padx=5, pady=10)
     cantidad_producto = tk.Entry(frame_busqueda)
@@ -66,8 +70,8 @@ def facturar_productos(root):
     cantidad_producto.bind("<FocusOut>", lambda event: on_focus_out(cantidad_producto, "1"))
     cantidad_producto.grid(row=5, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
     
-    btn_facturar_producto = ttk.Button(frame_busqueda, text="Agregar", command=lambda: agregar_producto_factura(str(buscador_codigo.get()), str(buscador_nombre.get()), int(cantidad_producto.get()), ventana_facturacion, frame_busqueda, tabla_productos_factura, [buscador_codigo, buscador_nombre, cantidad_producto], ["Agregar por código", "Agregar por nombre", "1"]))
-    btn_facturar_producto.grid(row=6, column=1, padx=5, pady=5, sticky="nsew")
+    # btn_facturar_producto = ttk.Button(frame_busqueda, text="Agregar", command=lambda: agregar_producto_factura(str(buscador_codigo.get()), str(buscador_nombre.get()), int(cantidad_producto.get()), ventana_facturacion, frame_busqueda, tabla_productos_factura, [buscador_codigo, buscador_nombre, cantidad_producto], ["Agregar por código", "Agregar por nombre", "1"]))
+    # btn_facturar_producto.grid(row=6, column=1, padx=5, pady=5, sticky="nsew")
     
     btn_editar_cantidad = ttk.Button(frame_busqueda, text="Editar", command=lambda: editar_cantidad_factura(root, tabla_productos_factura, frame_busqueda), state='disabled')
     btn_editar_cantidad.grid(row=7, column=1, padx=5, pady=5, sticky="nsew")
