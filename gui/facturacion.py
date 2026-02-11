@@ -19,13 +19,14 @@ from models.models import get_usuario, set_productos_factura, get_productos_fact
 # Función para la ventana "facturar"
 def facturar_productos(root):
     from utils.utils import regresar_menu, eliminar_producto
-    headers = ['ID', 'Id_Producto', 'Nombre_Producto', 'Descripción', 'Cantidad', 'Precio_Unitario', 'Subtotal']
+    headers = ['ID', 'ID', 'Nombre', 'Descripción', 'Cantidad', 'Precio', 'Subtotal']
     ventana_facturacion = tk.Toplevel(root)
     ventana_facturacion.title("Facturación")
     ventana_facturacion.state(newstate='zoomed')
     ttk.Label(ventana_facturacion, text="Facturación", font=("Arial", 16, "bold")).grid(row=0, column=0, padx=5, pady=20, sticky="nw")
     
     tabla_productos_factura = ttk.Treeview(ventana_facturacion, columns=('#1', '#2', '#3', '#4', '#5', '#6'))
+    tabla_productos_factura.column('#0', width=0, stretch=False)
     tabla_productos_factura.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
     
     scrollbar = ttk.Scrollbar(ventana_facturacion, orient=tk.VERTICAL, command=tabla_productos_factura.yview)
@@ -34,7 +35,7 @@ def facturar_productos(root):
     scrollbar.grid(row=1, column=0, padx=(0, 5), pady=5, sticky="nse")
     tabla_productos_factura.bind("<MouseWheel>", lambda e: on_mousewheel(e, tabla_productos_factura))
     
-    for i in range(len(headers)):
+    for i in range(1, len(headers)):
         tabla_productos_factura.heading(f'#{i}', text=headers[i])
         tabla_productos_factura.column(f'#{i}', minwidth=50, width=155)
     
