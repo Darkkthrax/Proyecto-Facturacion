@@ -12,20 +12,20 @@ from DBmanager.DBproductos import traer_inventario_producto_id_db, traer_inventa
 from DBmanager.DBfacturacion import traer_ultima_id_factura_db, crear_factura_db
 from DBmanager.DBusuarios import verificar_usuario_db, registrar_usuario_db
 from DBmanager.DBtipo_usuarios import traer_tipos
-from .buscar_productos import *
+from .buscar_productos import buscar_producto
 from models.models import get_usuario, set_productos_factura, get_productos_factura, get_cliente, set_cliente, info_empresa
 
 #! FUNCIONES PARA BOTÓN FACTURAR
 # Función para la ventana "facturar"
 def facturar_productos(root):
     from utils.utils import regresar_menu, eliminar_producto
-    headers = ['ID', 'ID', 'Nombre', 'Descripción', 'Cantidad', 'Precio', 'Subtotal']
+    headers = ['ID', 'ID', 'Nombre', 'Descripción', 'Marca', 'Cantidad', 'Precio', 'Subtotal']
     ventana_facturacion = tk.Toplevel(root)
     ventana_facturacion.title("Facturación")
     ventana_facturacion.state(newstate='zoomed')
     ttk.Label(ventana_facturacion, text="Facturación", font=("Arial", 16, "bold")).grid(row=0, column=0, padx=5, pady=20, sticky="nw")
     
-    tabla_productos_factura = ttk.Treeview(ventana_facturacion, columns=('#1', '#2', '#3', '#4', '#5', '#6'))
+    tabla_productos_factura = ttk.Treeview(ventana_facturacion, columns=('#1', '#2', '#3', '#4', '#5', '#6', '#7'))
     tabla_productos_factura.column('#0', width=0, stretch=False)
     tabla_productos_factura.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
     
