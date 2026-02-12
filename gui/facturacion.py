@@ -313,12 +313,13 @@ def abrir_pdf(ruta):
         print(f"✗ No se pudo abrir el PDF: {e}")
 
 # Función para actualizar la tabla de facturación
-def actualizar_datos_facturación(tabla):
+def actualizar_datos_facturación(tabla, call = False):
     productos_factura = get_productos_factura()
     
-    for i in range(len(productos_factura)):
-        productos_factura[i].insert(5, productos_factura[i][3] * productos_factura[i][4])
-    set_productos_factura(productos_factura)
+    if not call:
+        for i in range(len(productos_factura)):
+            productos_factura[i].insert(5, productos_factura[i][3] * productos_factura[i][4])
+        set_productos_factura(productos_factura)
 
     for item in tabla.get_children():
         tabla.delete(item)
