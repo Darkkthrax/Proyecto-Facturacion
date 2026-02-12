@@ -54,8 +54,8 @@ def facturar_productos(root):
     buscador_codigo.bind("<FocusOut>", lambda event: on_focus_out(buscador_codigo, "Agregar por código"))
     buscador_codigo.grid(row=2, column=1, padx=5, pady=5, sticky="nsew")
     
-    btn_buscar_nombre = ttk.Button(frame_busqueda, text='Buscar Nombre', command= lambda: buscar_producto(root))
-    btn_buscar_nombre.grid(row=3, column=1, padx=5, pady=5, sticky='nsew')
+    btn_buscar_nombre = ttk.Button(frame_busqueda, text='Buscar Nombre', command= lambda: buscar_producto(root, tabla_productos_factura))
+    btn_buscar_nombre.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky='nsew')
     
     # ttk.Label(frame_busqueda, text="Por nombre:").grid(row=3, column=0, padx=5, pady=2, sticky="w")
     # buscador_nombre = tk.Entry(frame_busqueda, fg='grey')
