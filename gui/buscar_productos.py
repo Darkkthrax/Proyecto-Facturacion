@@ -7,7 +7,7 @@ from DBmanager.DBproductos import traer_productos_busqueda_db
 from models.models import get_productos_factura, set_productos_factura
 
 # Función para crear la vista para buscar productos
-def buscar_producto(root, tabla_factura):
+def buscar_producto(root, frame, tabla_factura):
     headers = ['ID', 'Codigo', 'Nombre', 'Descripción', 'Marca', 'Cantidad Venta', 'Precio']
     ventana_buscador = tk.Toplevel(root)
     ventana_buscador.title('Buscar Producto')
@@ -29,7 +29,7 @@ def buscar_producto(root, tabla_factura):
     cantidad_producto.bind("<FocusIn>", lambda event: on_focus_in(cantidad_producto, "1"))
     cantidad_producto.bind("<FocusOut>", lambda event: on_focus_out(cantidad_producto, "1"))
     
-    btn_seleccionar = tk.Button(frame_opciones, text='Seleccionar', state='disabled', command= lambda: seleccionar_producto(ventana_buscador, tabla_resultados, tabla_factura, buscador_producto, cantidad_producto))
+    btn_seleccionar = tk.Button(frame_opciones, text='Seleccionar', state='disabled', command= lambda: seleccionar_producto(ventana_buscador, tabla_resultados, tabla_factura, frame, buscador_producto, cantidad_producto))
     btn_seleccionar.grid(row=0, column=4, padx=5, pady=5, sticky='nse')
     
     buscador_producto = tk.Entry(ventana_buscador)
@@ -58,7 +58,6 @@ def buscar_producto(root, tabla_factura):
 
 # Funcion para actualizar tabla de búsqueda
 def actualizar_busqueda(ventana, tabla, entrada):
-    print('Entra en actualizacion')
     if tabla.get_children():
         for item in tabla.get_children():
             tabla.delete(item)
@@ -85,10 +84,11 @@ def retrasar_funcion(ventana, tabla, entrada):
     retrasar_funcion.timer = entrada.after(700, lambda: actualizar_busqueda(ventana, tabla, entrada))
 
 # Función para botón seleccionar
-def seleccionar_producto(ventana, tabla, tabla_factura, entrada_producto, entrada_cantidad):
+def seleccionar_producto(ventana, tabla, tabla_factura, frame, entrada_producto, entrada_cantidad):
     if int(entrada_cantidad.get()) <= 0:
         messagebox.showerror('Error de cantidad', 'La cantidad seleccionada no puede ser menor a 1.', parent=ventana)
         return
+
     from .facturacion import actualizar_datos_facturación
     info_producto = tabla.item(tabla.selection()[0], 'values')
     productos_factura = get_productos_factura()
@@ -109,7 +109,7 @@ def seleccionar_producto(ventana, tabla, tabla_factura, entrada_producto, entrad
         productos_factura.append(producto)
     
     set_productos_factura(productos_factura)
-    actualizar_datos_facturación(tabla_factura, True)
+    actualizar_datos_facturación(tabla_factura, frame, True)
     
     entrada_producto.delete(0, tk.END)
     entrada_producto.insert(0, "Buscar producto")

@@ -54,7 +54,7 @@ def facturar_productos(root):
     buscador_codigo.bind("<FocusOut>", lambda event: on_focus_out(buscador_codigo, "Agregar por código"))
     buscador_codigo.grid(row=2, column=1, padx=5, pady=5, sticky="nsew")
     
-    btn_buscar_nombre = ttk.Button(frame_busqueda, text='Buscar Nombre', command= lambda: buscar_producto(root, tabla_productos_factura))
+    btn_buscar_nombre = ttk.Button(frame_busqueda, text='Buscar Nombre', command= lambda: buscar_producto(root, frame_busqueda, tabla_productos_factura))
     btn_buscar_nombre.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky='nsew')
     
     # ttk.Label(frame_busqueda, text="Por nombre:").grid(row=3, column=0, padx=5, pady=2, sticky="w")
@@ -75,10 +75,10 @@ def facturar_productos(root):
     # btn_facturar_producto.grid(row=6, column=1, padx=5, pady=5, sticky="nsew")
     
     btn_editar_cantidad = ttk.Button(frame_busqueda, text="Editar", command=lambda: editar_cantidad_factura(root, tabla_productos_factura, frame_busqueda), state='disabled')
-    btn_editar_cantidad.grid(row=7, column=1, padx=5, pady=5, sticky="nsew")
+    btn_editar_cantidad.grid(row=7, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
     
     btn_eliminar_producto = ttk.Button(frame_busqueda, text="Eliminar", command=lambda: eliminar_producto(tabla_productos_factura, ventana_facturacion, frame_busqueda), state='disabled')
-    btn_eliminar_producto.grid(row=8, column=1, padx=5, pady=5, sticky="nsew")
+    btn_eliminar_producto.grid(row=8, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
     
     ttk.Label(frame_busqueda, text="Datos del Cliente", font=("Arial", 10, "bold"), anchor='center').grid(row=9, column=0, columnspan=2, padx=5)
     
@@ -155,7 +155,7 @@ def verificar_producto_usuario_factura(frame, ventana = None):
         
         total_a_pagar = 0
         for producto in productos_factura:
-            total_a_pagar += producto[5]
+            total_a_pagar += float(producto[6])
         ttk.Label(frame, text=f"Total a Pagar: {total_a_pagar:,.2f}", anchor='center', font=("Arial", 10, "bold")).grid(row=16, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
     else:
         ttk.Label(frame, text="Agrega mínimo 1 producto", anchor='center', font=("Arial", 10, "bold")).grid(row=16, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
@@ -313,7 +313,7 @@ def abrir_pdf(ruta):
         print(f"✗ No se pudo abrir el PDF: {e}")
 
 # Función para actualizar la tabla de facturación
-def actualizar_datos_facturación(tabla, call = False):
+def actualizar_datos_facturación(tabla, frame, call = False):
     productos_factura = get_productos_factura()
     
     if not call:
@@ -325,6 +325,8 @@ def actualizar_datos_facturación(tabla, call = False):
         tabla.delete(item)
     for fila in productos_factura:
         tabla.insert('', tk.END, text=str(productos_factura.index(fila)), values=fila)
+    
+    verificar_producto_usuario_factura(frame)
 
 # Función para editar cantidad del producto de facturación
 def editar_cantidad_factura(root, tabla, frame):
