@@ -32,7 +32,7 @@ def traer_producto_id_db(id):
     try:
         with sqlite3.connect("db/database.db") as conn:
             cursor = conn.cursor()
-            cursor.execute(f"SELECT id_producto, nombre, descripcion, precio_unitario FROM tbl_productos WHERE id_producto = '{id}'")
+            cursor.execute(f"SELECT PR.id_producto, PR.nombre, PR.descripcion, PR.marca, CONCAT(PR.cantidad_venta, ' ', UM.nombre), PR.precio_unitario FROM tbl_productos AS PR INNER JOIN tbl_unidad_medida AS UM ON PR.unidad_medida = UM.id_unidad WHERE PR.id_producto = '{id}'")
             return cursor.fetchone()
         
     except sqlite3.Error as e:
