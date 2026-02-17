@@ -19,13 +19,13 @@ from models.models import get_usuario, set_productos_factura, get_productos_fact
 # Función para la ventana "facturar"
 def facturar_productos(root):
     from utils.utils import regresar_menu, eliminar_producto
-    headers = ['ID', 'ID', 'Nombre', 'Descripción', 'Marca', 'Cantidad', 'Precio', 'Subtotal']
+    headers = ['ID', 'ID', 'Nombre', 'Descripción', 'Marca', 'Medida', 'Cantidad', 'Precio', 'Subtotal']
     ventana_facturacion = tk.Toplevel(root)
     ventana_facturacion.title("Facturación")
     ventana_facturacion.state(newstate='zoomed')
     ttk.Label(ventana_facturacion, text="Facturación", font=("Arial", 16, "bold")).grid(row=0, column=0, padx=5, pady=20, sticky="nw")
     
-    tabla_productos_factura = ttk.Treeview(ventana_facturacion, columns=('#1', '#2', '#3', '#4', '#5', '#6', '#7'))
+    tabla_productos_factura = ttk.Treeview(ventana_facturacion, columns=('#1', '#2', '#3', '#4', '#5', '#6', '#7', '#8'))
     tabla_productos_factura.column('#0', width=0, stretch=False)
     tabla_productos_factura.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
     
@@ -37,7 +37,7 @@ def facturar_productos(root):
     
     for i in range(1, len(headers)):
         tabla_productos_factura.heading(f'#{i}', text=headers[i])
-        tabla_productos_factura.column(f'#{i}', minwidth=50, width=155)
+        tabla_productos_factura.column(f'#{i}', minwidth=50, width=130)
     
     frame_busqueda = ttk.Frame(ventana_facturacion)
     frame_busqueda.grid(row=1, column=1, padx=10, pady=5, sticky="nsew")
