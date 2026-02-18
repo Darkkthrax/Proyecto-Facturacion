@@ -93,14 +93,14 @@ def seleccionar_producto(ventana, tabla, tabla_factura, frame, entrada_producto,
     info_producto = tabla.item(tabla.selection()[0], 'values')
     productos_factura = get_productos_factura()
     
-    producto = [info_producto[0], info_producto[1], info_producto[2], info_producto[3], int(entrada_cantidad.get()), info_producto[5], int(entrada_cantidad.get()) * float(info_producto[5])]
+    producto = [info_producto[0], info_producto[1], info_producto[2], info_producto[3], info_producto[4], int(entrada_cantidad.get()), info_producto[5], int(entrada_cantidad.get()) * float(info_producto[5])]
     
     if productos_factura:
         producto_en_factura = False
         for producto_factura in productos_factura:
             if info_producto[0] in producto_factura:
-                producto_factura[4] += int(entrada_cantidad.get())
-                producto_factura[6] = float(producto_factura[5]) * int(producto_factura[4])
+                producto_factura[5] += int(entrada_cantidad.get())
+                producto_factura[7] = int(producto_factura[5]) * float(producto_factura[6])
                 producto_en_factura = True
                 break
         if not producto_en_factura:
