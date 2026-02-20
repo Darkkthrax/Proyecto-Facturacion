@@ -112,7 +112,7 @@ def agregar_producto_factura(id, nombre, cantidad, ventana, frame, tabla, entrad
         messagebox.showerror("Error", "Verifique que uno de los campos de consulta esté lleno", parent=ventana)
     elif id != 'Agregar por código' and nombre != 'Agregar por nombre':
         messagebox.showerror("Error", "Especifíque solamente 1 método de búsqueda", parent=ventana)
-    elif verificar_productos(id, nombre):
+    elif verificar_productos(id):
         limite = traer_inventario_producto_id_db(id)[0] if id != 'Agregar por código' else traer_inventario_producto_nombre_db(nombre)[0]
         if cantidad <= limite:
             if cantidad <= 0:
@@ -138,7 +138,7 @@ def agregar_producto_factura(id, nombre, cantidad, ventana, frame, tabla, entrad
         else:
             messagebox.showerror("Error", f"Se excede las existencias del producto. Inventario: {limite}", parent=ventana)
     else:
-        messagebox.showerror("Error", "No se encontró un producto con la id o el nombre especificado", parent=ventana)
+        messagebox.showerror("Error", "No se encontró un producto con la id especificada", parent=ventana)
     set_productos_factura(productos_factura)
     actualizar_datos_facturación(tabla, frame)
     restaurar_entradas(entradas, placeholders)

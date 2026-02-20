@@ -14,9 +14,9 @@ def finalizar_programa(root):
         sys.exit("Cerrando el programa")
 
 # Funcion para verificar si existen productos iguales
-def verificar_productos(id, nombre):
+def verificar_productos(id):
     productos = traer_productos_db()
-    return any(str(id) in producto for producto in productos) if id != 'Agregar por código' else any(nombre in producto for producto in productos)
+    return any(str(id) in producto for producto in productos)
 
 # Función para regresar al menú
 def regresar_menu(root, ventana):
