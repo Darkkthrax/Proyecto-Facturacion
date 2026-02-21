@@ -52,7 +52,7 @@ def facturar_productos(root):
     buscador_codigo.insert(0, "Agregar por código")
     buscador_codigo.bind("<FocusIn>", lambda event: on_focus_in(buscador_codigo, "Agregar por código"))
     buscador_codigo.bind("<FocusOut>", lambda event: on_focus_out(buscador_codigo, "Agregar por código"))
-    buscador_codigo.bind('<Return>', lambda event: agregar_producto_factura(str(buscador_codigo.get()), 'Agregar por nombre', int(cantidad_producto.get()), ventana_facturacion, frame_busqueda, tabla_productos_factura, [buscador_codigo, cantidad_producto], ["Agregar por código", "1"]))
+    buscador_codigo.bind('<Return>', lambda event: agregar_producto_factura(str(buscador_codigo.get()), int(cantidad_producto.get()), ventana_facturacion, frame_busqueda, tabla_productos_factura, [buscador_codigo, cantidad_producto], ["Agregar por código", "1"]))
     buscador_codigo.grid(row=2, column=1, padx=5, pady=5, sticky="nsew")
     
     btn_buscar_nombre = ttk.Button(frame_busqueda, text='Buscar Nombre', command= lambda: buscar_producto(root, frame_busqueda, tabla_productos_factura))
@@ -105,34 +105,28 @@ def facturar_productos(root):
     tabla_productos_factura.bind('<<TreeviewSelect>>', lambda event: on_tree_select(event, tabla_productos_factura, btn_editar_cantidad, btn_eliminar_producto))
 
 # Función para agregar un producto a la factura
-def agregar_producto_factura(id, nombre, cantidad, ventana, frame, tabla, entradas, placeholders):
+def agregar_producto_factura(id, cantidad, ventana, frame, tabla, entradas, placeholders):
     productos_factura = get_productos_factura()
     from utils.utils import verificar_productos
-    if id == 'Agregar por código' and nombre == 'Agregar por nombre':
-        messagebox.showerror("Error", "Verifique que uno de los campos de consulta esté lleno", parent=ventana)
-    elif id != 'Agregar por código' and nombre != 'Agregar por nombre':
-        messagebox.showerror("Error", "Especifíque solamente 1 método de búsqueda", parent=ventana)
+    if id == 'Agregar por código':
+        messagebox.showerror("Error", "Verifique que el campo tenga un código de producto válido.", parent=ventana)
     elif verificar_productos(id):
-        limite = traer_inventario_producto_id_db(id)[0] if id != 'Agregar por código' else traer_inventario_producto_nombre_db(nombre)[0]
+        limite = traer_inventario_producto_id_db(id)[0]
         if cantidad <= limite:
             if cantidad <= 0:
                 messagebox.showerror("Error", "No se pueden agregar valores negativos o 0 en la cantidad.", parent=ventana)
             else:
-                if (any(str(id) in producto for producto in productos_factura) if id != 'Agregar por código' else any(nombre in producto for producto in productos_factura)):
+                if any(str(id) in producto for producto in productos_factura):
                     for i in range(0, len(productos_factura)):
-                        if (str(id) in productos_factura[i] if id != 'Agregar por código' else nombre in productos_factura[i]):
+                        if str(id) in productos_factura[i]:
                             if( productos_factura[i][5] + cantidad) <= limite:
                                 productos_factura[i][5] += cantidad
                                 break
                             else:
                                 messagebox.showwarning("Advertencia", f"Límite de producto alcanzado. Inventario: {limite}", parent=ventana)
-                elif id != 'Agregar por código':
+                else:
                     producto_db = list(traer_producto_id_db(id))
                     print(producto_db)
-                    producto_db.insert(5, cantidad)
-                    productos_factura.append(producto_db)
-                else:
-                    producto_db = list(traer_producto_nombre_db(nombre))
                     producto_db.insert(5, cantidad)
                     productos_factura.append(producto_db)
         else:
