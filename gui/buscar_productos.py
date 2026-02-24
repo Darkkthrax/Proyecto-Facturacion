@@ -8,10 +8,10 @@ from models.models import get_productos_factura, set_productos_factura
 
 # Función para crear la vista para buscar productos
 def buscar_producto(root, frame, tabla_factura):
-    headers = ['ID', 'Codigo', 'Nombre', 'Descripción', 'Marca', 'Cantidad Venta', 'Precio']
+    headers = ['ID', 'Codigo', 'Nombre', 'Descripción', 'Marca', 'Inventario','Cantidad Venta', 'Precio']
     ventana_buscador = tk.Toplevel(root)
     ventana_buscador.title('Buscar Producto')
-    ventana_buscador.geometry('925x512')
+    ventana_buscador.geometry('1072x512')
     
     frame_opciones = tk.Frame(ventana_buscador)
     frame_opciones.grid(row=0, column=0, sticky='nsew')
@@ -41,7 +41,7 @@ def buscar_producto(root, frame, tabla_factura):
     frame_tabla = tk.Frame(ventana_buscador)
     frame_tabla.grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
     
-    tabla_resultados = ttk.Treeview(frame_tabla, columns=('#1', '#2', '#3', '#4', '#5', '#6'))
+    tabla_resultados = ttk.Treeview(frame_tabla, columns=('#1', '#2', '#3', '#4', '#5', '#6', '#7'))
     tabla_resultados.column('#0', width=0, stretch=False)
     tabla_resultados.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
     tabla_resultados.bind('<<TreeviewSelect>>', lambda event: on_tree_select(event, tabla_resultados, btn_seleccionar))
@@ -67,10 +67,10 @@ def actualizar_busqueda(ventana, tabla, entrada):
     for producto in productos:
         valores = []
         for i in range(0, len(producto)):
-            if i == 4:
+            if i == 5:
                 valores.append(f'{str(producto[i])} {producto[i+1]}')
                 continue
-            if i == 5:
+            if i == 6:
                 continue
             valores.append(producto[i])
         tabla.insert('', tk.END, text=str(productos.index(producto)), values=valores)
@@ -93,7 +93,7 @@ def seleccionar_producto(ventana, tabla, tabla_factura, frame, entrada_producto,
     info_producto = tabla.item(tabla.selection()[0], 'values')
     productos_factura = get_productos_factura()
     
-    producto = [info_producto[0], info_producto[1], info_producto[2], info_producto[3], info_producto[4], int(entrada_cantidad.get()), info_producto[5], int(entrada_cantidad.get()) * float(info_producto[5])]
+    producto = [info_producto[0], info_producto[1], info_producto[2], info_producto[3], info_producto[5], int(entrada_cantidad.get()), info_producto[6], int(entrada_cantidad.get()) * float(info_producto[6])]
     
     if productos_factura:
         producto_en_factura = False
