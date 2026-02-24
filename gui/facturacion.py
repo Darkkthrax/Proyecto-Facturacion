@@ -108,13 +108,16 @@ def facturar_productos(root):
 def agregar_producto_factura(id, cantidad, ventana, frame, tabla, entradas, placeholders):
     productos_factura = get_productos_factura()
     from utils.utils import verificar_productos
-    if id == 'Agregar por código':
+    if id.split() == 'Agregar por código' or id.split() == "":
         messagebox.showerror("Error", "Verifique que el campo tenga un código de producto válido.", parent=ventana)
-    elif verificar_productos(id):
+        return
+
+    if verificar_productos(id):
         limite = traer_inventario_producto_id_db(id)[0]
         if cantidad <= limite:
             if cantidad <= 0:
                 messagebox.showerror("Error", "No se pueden agregar valores negativos o 0 en la cantidad.", parent=ventana)
+                return
             else:
                 if any(str(id) in producto for producto in productos_factura):
                     for i in range(0, len(productos_factura)):
@@ -124,15 +127,17 @@ def agregar_producto_factura(id, cantidad, ventana, frame, tabla, entradas, plac
                                 break
                             else:
                                 messagebox.showwarning("Advertencia", f"Límite de producto alcanzado. Inventario: {limite}", parent=ventana)
+                                return
                 else:
                     producto_db = list(traer_producto_id_db(id))
-                    print(producto_db)
                     producto_db.insert(5, cantidad)
                     productos_factura.append(producto_db)
         else:
             messagebox.showerror("Error", f"Se excede las existencias del producto. Inventario: {limite}", parent=ventana)
+            return
     else:
         messagebox.showerror("Error", "No se encontró un producto con la id especificada", parent=ventana)
+        return
     set_productos_factura(productos_factura)
     actualizar_datos_facturación(tabla, frame)
     restaurar_entradas(entradas, placeholders)
