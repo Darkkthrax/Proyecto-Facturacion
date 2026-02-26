@@ -99,6 +99,9 @@ def seleccionar_producto(ventana, tabla, tabla_factura, frame, entrada_producto,
         producto_en_factura = False
         for producto_factura in productos_factura:
             if info_producto[0] in producto_factura:
+                if int(entrada_cantidad.get()) > float(info_producto[4]) or (producto_factura[5] + int(entrada_cantidad.get())) > float(info_producto[4]):
+                    messagebox.showerror('Error de cantidad', 'La cantidad seleccionada no puede exceder el inventario disponible.', parent=ventana)
+                    return
                 producto_factura[5] += int(entrada_cantidad.get())
                 producto_factura[7] = int(producto_factura[5]) * float(producto_factura[6])
                 producto_en_factura = True
