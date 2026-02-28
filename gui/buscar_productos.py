@@ -114,9 +114,13 @@ def seleccionar_producto(ventana, tabla, tabla_factura, frame, entrada_producto,
     set_productos_factura(productos_factura)
     actualizar_datos_facturación(tabla_factura, frame, True)
     
-    entrada_producto.delete(0, tk.END)
+    entradas = [entrada_cantidad, entrada_producto]
+    for entrada in entradas:
+        entrada.delete(0, tk.END)
+        entrada.config(fg='grey')
+    entrada_cantidad.insert(0, '1')
     entrada_producto.insert(0, "Buscar producto")
-    entrada_producto.config(fg='grey')
+    entrada_producto.focus_set()
     
     for item in tabla.get_children():
         tabla.delete(item)
