@@ -65,6 +65,7 @@ python main.py
 
 ## Estructura del Proyecto
 
+```text
 Proyecto-Facturacion/
 ├── main.py           # Punto de entrada
 ├── auth/             # Lógica de autenticación
@@ -75,6 +76,7 @@ Proyecto-Facturacion/
 ├── utils/            # Utilidades generales
 ├── requirements.txt  # Dependencias
 └── .env_ejemplo      # Plantilla de variables de entorno
+```
 
 ---
 
