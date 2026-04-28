@@ -1,93 +1,93 @@
-# Sistema de Facturación — Supermercado
+# Billing System — Supermarket
 
-Aplicación de escritorio para la facturación y administración de productos de un supermercado.  
-Desarrollada en Python con interfaz gráfica en Tkinter. **Proyecto universitario en desarrollo activo.**
-
----
-
-## Descripción
-
-Sistema integral que permite gestionar el inventario, la creación de usuarios y la facturación de un negocio de tipo supermercado. Cuenta con módulos para la creación de facturas en PDF, búsqueda de productos en tiempo real y administración de diferentes tipos de usuarios con control de acceso.
+Desktop application for billing and product management for supermarkets.
+Developed using Python with Tkinter for GUI. **University project, currently in active development.**
 
 ---
 
-## Funcionalidades
+## Description
 
-- Inicio de sesión con encriptación de contraseñas (bcrypt)
-- Gestión de usuarios: clientes, empleados y administradores
-- Revisión y administración de inventario de productos
-- Búsqueda de productos en tiempo real *(en desarrollo)*
-- Creación y visualización de facturas en formato PDF (FPDF2)
-- Historial de facturas generadas
-- Base de datos local con SQLite3
+Comprehensive system to manage inventory, create users and handle billing for a supermarket business. It has modules to create PDF invoices, real-time product search and different types of user management using access control.
 
 ---
 
-## 🛠️ Tecnologías
+## Features
 
-| Tecnología | Uso |
+- Login with password encryption (bcrypt)
+- User management: customers, employees and administrators
+- Product inventory review and management
+- Real-time product search *(WIP)*
+- Invoice creation and viewing in PDF format (FPDF2)
+- Invoice history
+- Local database using SQLite3
+
+---
+
+## Technologies
+
+| Technology | Use |
 |---|---|
-| Python 3.12 | Lenguaje principal |
-| Tkinter | Interfaz gráfica de usuario (GUI) |
-| SQLite3 | Base de datos local |
-| FPDF2 | Generación de facturas en PDF |
-| bcrypt | Encriptación de contraseñas |
-| python-dotenv | Gestión de variables de entorno |
+| Python 3.12 | Main language |
+| Tkinter | Graphical User Interface (GUI) |
+| SQLite3 | Local database |
+| FPDF2 | PDF invoice generation |
+| bcrypt | Password encryption |
+| python-dotenv | Environment variable management |
 
 ---
 
-## Instalación
+## How to Install
 
-### Requisitos
+### Requirements
 
 - Python 3.12+
-- Sistema operativo: Windows
+- Operating System (OS): Windows
 
-### Pasos
+### Steps
 
 ```bash
-# 1. Clona el repositorio
+# 1. Clone the repository
 git clone https://github.com/Darkkthrax/Proyecto-Facturacion.git
 cd Proyecto-Facturacion
 
-# 2. Instala las dependencias
+# 2. Install dependencies
 pip install -r requirements.txt
 
-# 3. Configura las variables de entorno
+# 3. Set up the environment variables
 cp .env_ejemplo .env
-# Edita el archivo .env con tus valores
+# Edit the .env file with your values
 
-# 4. Ejecuta la aplicación
+# 4. Run the application
 python main.py
 ```
 
 ---
 
-## Estructura del Proyecto
+## Project Structure
 
 ```text
 Proyecto-Facturacion/
-├── main.py           # Punto de entrada
-├── auth/             # Lógica de autenticación
-├── DBmanager/        # Gestión de base de datos
-├── gui/              # Interfaces gráficas (Tkinter)
-├── models/           # Modelos de datos
-├── src/              # Lógica de negocio
-├── utils/            # Utilidades generales
-├── requirements.txt  # Dependencias
-└── .env_ejemplo      # Plantilla de variables de entorno
+├── main.py           # Entry point
+├── auth/             # Authentication logic
+├── DBmanager/        # Database management
+├── gui/              # Graphical interfaces (Tkinter)
+├── models/           # Data models
+├── src/              # Business logic (resources, images, PDF)
+├── utils/            # General utilities
+├── requirements.txt  # Dependencies
+└── .env_ejemplo      # Environment variables template
 ```
 
 ---
 
-## Estado del Proyecto
+## Project Status
 
-Este proyecto se encuentra **en desarrollo activo**. Las funcionalidades marcadas pueden estar incompletas o sujetas a cambios.
+Currently, this project is in **active development**. Features marked as WIP may be incomplete or subject to change.
 
 ---
 
-## Autor
+## Author
 
-**Jerónimo Orozco Urrego**  
-Analista y Desarrollador de Software | Ingeniería en Sistemas  
+**Jerónimo Orozco Urrego**
+Software Analyst and Developer | Systems Engineering
 [LinkedIn](https://www.linkedin.com/in/jeronimo-orozco-u/) · [GitHub](https://github.com/Darkkthrax)
